@@ -389,6 +389,10 @@ footer{text-align:center;padding:2rem 0 1.5rem;font-size:11px;color:var(--text3)
       </div>
     </div>
   </div>
+  <!-- placar e histórico DURANTE a batalha -->
+  <div class="placar" id="placar" style="display:none">0 – 0</div>
+  <div class="gym-log-rows" id="gym-log-rows"></div>
+  <!-- tela final da run (some o de cima, fica só isso) -->
   <div class="final-card" id="final-card" style="display:none"></div>
   <div class="btns-final" id="btns-final" style="display:none">
     <button class="btn" onclick="rolarDado()">🎲 Rolar de novo</button>
@@ -897,6 +901,8 @@ async function irSimular(){
     `${regiaoAtual.nome} · ${regiaoAtual.gen} · ${difficulty==='easy'?'Fácil':'Difícil'} · Nível 50`;
   document.getElementById('final-card').style.display='none';
   document.getElementById('btns-final').style.display='none';
+  document.getElementById('placar').style.display='none';
+  document.getElementById('gym-log-rows').innerHTML='';
   document.getElementById('battle-arena').style.display='block';
 
   let v=0,d=0;
@@ -905,10 +911,15 @@ async function irSimular(){
     const log=await simularGinasio(gi,gym);
     battleLogs.push(log);
     if(log.ganhou) v++; else d++;
+    document.getElementById('placar').style.display='block';
+    document.getElementById('placar').textContent=`${v} – ${d}`;
+    adicionarLinhaGinasio(gi, regiaoAtual.gyms[gi], log, v, d);
   }
 
   await sleep(400);
   document.getElementById('battle-arena').style.display='none';
+  document.getElementById('placar').style.display='none';
+  document.getElementById('gym-log-rows').style.display='none';
   mostrarFimDeRun(v,d);
 }
 
@@ -1215,6 +1226,25 @@ function atuHp(player, gymPoke, gym){
   document.getElementById('hp-e-val').textContent=Math.max(0,Math.round(eH))+'%';
   document.getElementById('hp-e-bar').style.width=(ep*100)+'%';
   document.getElementById('hp-e-bar').style.background=hpColor(ep);
+}
+
+function adicionarLinhaGinasio(gi,gym,log,v,d){
+  const row=document.createElement('div');
+  row.className='gym-log-row';
+  row.onclick=()=>abrirLog(gi);
+  const heroId=log.heroPoke?log.heroPoke.id:team[0].id;
+  const heroShiny=log.heroPoke?log.heroPoke.shiny:false;
+  row.innerHTML=`
+    ${imgTag(heroId,36,36,heroShiny)}
+    ${imgTag(log.lidId,36,36)}
+    <div>
+      <div class="glr-name">${gym.lider}</div>
+      <div class="glr-detail">${log.heroPoke?.name||'—'} liderou · ver detalhes</div>
+    </div>
+    <span class="type-chip" style="background:${TC[gym.tipoN]||'#D3D1C7'};color:${TT[gym.tipoN]||'#2C2C2A'}">${gym.tipo}</span>
+    <span class="glr-ico" style="color:${log.ganhou?'#1a5c1a':'#8b1a1a'}">${log.ganhou?'✓':'✗'}</span>`;
+  document.getElementById('gym-log-rows').appendChild(row);
+  setTimeout(()=>row.classList.add('show'),50);
 }
 
 function abrirLog(gi){
