@@ -94,10 +94,10 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 .order-card.dragging{opacity:.4;border-color:#378ADD}
 .order-card.drag-over{border-color:#378ADD;background:#E6F1FB}
 .order-num{font-size:14px;font-weight:800;color:var(--text3);text-align:center}
-.order-card img{width:40px;height:40px;image-rendering:pixelated;display:block}
+.order-card img:not(.type-img){width:40px;height:40px;image-rendering:pixelated;display:block}
 .order-info{}
 .order-name{font-size:13px;font-weight:700;color:var(--text)}
-.order-meta{font-size:10px;color:var(--text2)}
+.order-meta{font-size:10px;color:var(--text2);display:flex;align-items:center;gap:4px;margin-top:3px;flex-wrap:wrap;line-height:1}
 .order-hp-bar-bg{height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-top:3px;width:80px}
 .order-hp-bar{height:4px;border-radius:2px;transition:width .3s}
 .order-drag-handle{font-size:16px;color:var(--text3)}
@@ -105,15 +105,14 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 /* TIME */
 .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem}
 .team-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:.875rem .75rem;text-align:center;position:relative}
-.team-card img{width:58px;height:58px;image-rendering:pixelated;display:block;margin:0 auto 4px}
-.team-name{font-size:11px;font-weight:700;color:var(--text);margin-bottom:1px}.team-ovr{font-size:15px;font-weight:800;margin-bottom:1px}.team-meta{font-size:9px;color:var(--text3)}
+.team-card img:not(.type-img){width:58px;height:58px;image-rendering:pixelated;display:block;margin:0 auto 4px}
+.team-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px}.team-ovr{font-size:16px;font-weight:800;margin-bottom:4px}.team-meta{font-size:9px;color:var(--text3);display:flex;align-items:center;justify-content:center;gap:3px;flex-wrap:nowrap}
 .team-shiny{position:absolute;top:6px;right:8px;font-size:13px}
 .team-card.fainted{opacity:.4;filter:grayscale(1)}
 
 
 /* FIGHTER INFO melhorado */
 .fighter-ovr{font-size:20px;font-weight:800;line-height:1;margin-bottom:4px}
-.fighter-types{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;margin-top:2px}
 
 /* MINI LOG */
 .arena-log{padding:.5rem 1rem;font-size:11.5px;color:var(--text2);line-height:1.55;max-height:76px;overflow-y:auto;display:flex;flex-direction:column;gap:1px}
@@ -130,14 +129,25 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 .btn-desistir{border-color:#8b1a1a;color:#8b1a1a;background:var(--bg)}
 .btn-desistir:hover{background:#fff0f0}
 
+
+/* ÍCONES DE TIPO CIRCULARES */
+.type-img{image-rendering:pixelated;display:inline-block;vertical-align:middle}
+
+/* PULSE no botão Atacar */
+@keyframes pulse-atk{0%,100%{box-shadow:0 0 0 0 rgba(0,0,0,.18)}60%{box-shadow:0 0 0 6px rgba(0,0,0,0)}}
+.action-btn.primary:not(:disabled){animation:pulse-atk 1.6s ease-in-out infinite}
+
+/* HEADER da sim centralizado */
+.sim-header{text-align:center;margin-bottom:.75rem}
+.sim-lbl-regiao{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
+.sim-lbl-lider{font-size:16px;font-weight:800;color:var(--text);margin-top:2px}
+
 /* TURNO INDICATOR */
-.turno-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;margin-bottom:.5rem}
-.turno-badge.sua-vez{background:#E6F1FB;color:#0C447C}
-.turno-badge.aguardando{background:var(--bg2);color:var(--text3)}
+.turno-badge{display:none!important}
 
 /* ARENA FIGHTERS — layout melhorado */
 .fighter-side{text-align:center;position:relative;flex:1}
-.fighter-side img{width:80px;height:80px;image-rendering:pixelated;display:block;margin:0 auto 6px}
+.fighter-side img:not(.type-img){width:80px;height:80px;image-rendering:pixelated;display:block;margin:0 auto 6px}
 .fighter-name{font-size:13px;font-weight:800;color:var(--text);margin-bottom:3px}
 .fighter-ovr{font-size:18px;font-weight:800;margin-bottom:3px}
 .fighter-types{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
@@ -184,7 +194,7 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 .battle-arena{border:1px solid var(--border);border-radius:var(--r);background:var(--bg2);overflow:hidden;margin-bottom:1rem}
 .arena-fighters{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.875rem 1rem;border-bottom:1px solid var(--border);gap:8px}
 .fighter-side{text-align:center;position:relative}
-.fighter-side img{width:72px;height:72px;image-rendering:pixelated;display:block;margin:0 auto;transition:opacity .3s}
+.fighter-side img:not(.type-img){width:72px;height:72px;image-rendering:pixelated;display:block;margin:0 auto;transition:opacity .3s}
 .fighter-name{font-size:12px;font-weight:700;color:var(--text);margin-top:3px}.fighter-sub{font-size:10px;color:var(--text2)}
 .arena-vs{font-size:13px;font-weight:800;color:var(--text3)}
 .hp-block{padding:.5rem 1rem;border-bottom:1px solid var(--border)}
@@ -212,7 +222,7 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 .gym-log-rows{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem}
 .gym-log-row{display:grid;grid-template-columns:38px 38px 1fr auto auto;align-items:center;gap:8px;padding:.625rem .875rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s;cursor:pointer}
 .gym-log-row:hover{background:var(--bg3)}.gym-log-row.show{opacity:1;transform:none}
-.gym-log-row img{width:36px;height:36px;image-rendering:pixelated;display:block}
+.gym-log-row img:not(.type-img){width:36px;height:36px;image-rendering:pixelated;display:block}
 .glr-name{font-size:12px;font-weight:700}.glr-detail{font-size:10px;color:var(--text3)}
 .type-chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;white-space:nowrap}.glr-ico{font-size:16px;font-weight:700}
 .final-card{border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;text-align:center;margin-bottom:1rem;background:var(--bg2)}
@@ -238,7 +248,7 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 .action-btn:disabled{opacity:.3;cursor:default}
 .action-btn.primary{background:var(--text);color:var(--bg);border-color:var(--text)}
 .action-btn.primary:hover:not(:disabled){opacity:.88;background:var(--text)}
-.action-btn img{width:22px;height:22px;image-rendering:pixelated}
+.action-btn img:not(.type-img){width:22px;height:22px;image-rendering:pixelated}
 .action-btn-label{font-size:11px;font-weight:800}
 .action-btn-sub{font-size:10px;opacity:.7;font-weight:500}
 .action-btn-count{position:absolute;top:5px;right:7px;font-size:10px;font-weight:800;color:var(--text3)}
@@ -250,7 +260,7 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 .swap-btn{display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid var(--border2);border-radius:var(--rs);background:var(--bg);color:var(--text);font-size:12px;font-weight:700;cursor:pointer;transition:.15s;width:100%}
 .swap-btn:hover:not(:disabled){background:var(--bg3)}
 .swap-btn:disabled{opacity:.3;cursor:default}
-.swap-btn img{width:28px;height:28px;image-rendering:pixelated}
+.swap-btn img:not(.type-img){width:28px;height:28px;image-rendering:pixelated}
 .swap-btn-info{flex:1;text-align:left}
 .swap-btn-name{font-size:13px;font-weight:700}
 .swap-btn-hp{font-size:10px;color:var(--text2)}
@@ -382,16 +392,16 @@ footer{text-align:center;padding:2rem 0 1.5rem;font-size:11px;color:var(--text3)
   <div class="draft-slots" id="draft-slots"></div>
   <div class="draft-slot-label" id="dr-label">Escolha seu 1º pokémon</div>
   <div class="poke-options" id="poke-options"></div>
-  <button class="btn" id="btn-reroll" onclick="sortearNovos()">🔀 Sortear 5 diferentes</button>
+  <button class="btn" id="btn-reroll" onclick="sortearNovos()">Sortear 5 diferentes</button>
   <button class="btn btn-dark" id="btn-confirmar" onclick="confirmarEscolha()" disabled>Confirmar escolha</button>
 </div>
 
 <!-- ORDEM DO TIME -->
 <div id="s-ordem" class="screen">
-  <div class="order-header">Defina a ordem do time</div>
-  <div class="order-sub">Use as setas para reordenar. O primeiro luta primeiro em cada ginásio.</div>
+  <h2>Defina a ordem do time</h2>
+  <p class="sub">Use as setas para reordenar. O primeiro luta primeiro em cada ginásio.</p>
   <div class="order-list" id="order-list"></div>
-  <button class="btn btn-dark" onclick="confirmarOrdem()">Confirmar ordem e ver time →</button>
+  <button class="btn btn-dark" onclick="confirmarOrdem()">Confirmar</button>
 </div>
 
 <!-- MODAL CONFIRMAÇÃO SAÍDA DRAFT -->
@@ -419,16 +429,20 @@ footer{text-align:center;padding:2rem 0 1.5rem;font-size:11px;color:var(--text3)
   <h2>Seu time</h2>
   <p class="sub" id="time-sub">—</p>
   <div class="team-grid" id="team-grid"></div>
-  <button class="btn btn-dark" onclick="irSimular()">Simular contra os ginásios →</button>
-  <button class="btn" onclick="iniciarDraft()">🔀 Novo draft</button>
+  <p class="sub" id="time-ovr" style="margin-top:.75rem;margin-bottom:0;text-align:center"></p>
+  <button class="btn btn-dark" onclick="irSimular()" style="margin-top:1rem">Batalhar!</button>
+  <button class="btn" onclick="iniciarDraft()">Refazer time</button>
 </div>
 
 <!-- SIMULAÇÃO -->
 <div id="s-sim" class="screen">
-  <p class="sim-eyebrow" id="sim-lbl">—</p>
-  <div id="turno-badge" class="turno-badge aguardando" style="display:none">⏳ Aguardando…</div>
+  <div class="sim-header">
+    <div class="sim-lbl-regiao" id="sim-lbl">—</div>
+    <div class="sim-lbl-lider" id="sim-lbl-lider">—</div>
+  </div>
   <div class="battle-arena" id="battle-arena" style="display:none">
-    <div class="arena-fighters" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.875rem 1rem;border-bottom:1px solid var(--border);gap:8px">
+    <div id="turno-badge" class="turno-badge aguardando" style="display:none;margin:.5rem 1rem .25rem"></div>
+    <div class="arena-fighters" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.5rem 1rem .875rem;border-bottom:1px solid var(--border);gap:8px">
       <div class="fighter-side" id="af-player"></div>
       <div class="arena-vs">VS</div>
       <div class="fighter-side" id="af-enemy"></div>
@@ -478,8 +492,8 @@ footer{text-align:center;padding:2rem 0 1.5rem;font-size:11px;color:var(--text3)
   </div>
   <!-- botões de controle da batalha -->
   <div class="sim-bottom-btns" id="sim-bottom-btns" style="display:none">
-    <button class="btn btn-auto" id="btn-auto" onclick="toggleAuto()">🤖 Jogo automático</button>
-    <button class="btn btn-desistir" onclick="desistir()">🏳️ Desistir</button>
+    <button class="btn btn-auto" id="btn-auto" onclick="toggleAuto()">Automático: off</button>
+    <button class="btn btn-desistir" onclick="desistir()">Desistir</button>
   </div>
   <!-- placar e histórico DURANTE a batalha -->
   <div class="placar" id="placar" style="display:none">0 – 0</div>
@@ -797,7 +811,7 @@ function renderOfertas(){
       </div>
       <div>
         <div class="poke-name">${p.name}${p.shiny?' ✨':''}</div>
-        <div class="poke-meta">${p.types.map(pill).join('')}<span class="poke-region-gen">${p._regiao||''} · ${p._gen||''}</span></div>
+        <div class="poke-meta">${typeIcons(p.types,12)}<span class="poke-region-gen" style="margin-left:4px">${p._regiao||''} · ${p._gen||''}</span></div>
       </div>
       <div class="poke-ovr-col">
         ${hideOvr
@@ -832,7 +846,7 @@ function renderOrdem(){
       ${imgTag(p.id,40,40,p.shiny)}
       <div class="order-info">
         <div class="order-name">${p.name}${p.shiny?' ✨':''}</div>
-        <div class="order-meta">${p.types.map(t=>`<span class="type-pill" style="background:${TC[t]||'#ccc'};color:${TT[t]||'#000'}">${t}</span>`).join('')}${p.legendary?' ⭐':''} · OVR ${difficulty==='hard'?'?':p.ovr}</div>
+        <div class="order-meta">${typeIcons(p.types,12)}${p.legendary?' ⭐':''} · OVR ${difficulty==='hard'?'?':p.ovr}</div>
       </div>
       <div class="order-arrows">
         <button class="order-arrow" onclick="moverOrdem(${i},-1)" ${i===0?'disabled':''}>▲</button>
@@ -851,14 +865,15 @@ function moverOrdem(idx,dir){
 function confirmarOrdem(){
   show('s-time');
   const avg=Math.round(team.reduce((a,p)=>a+p.ovr,0)/team.length);
-  document.getElementById('time-sub').textContent=`Ginásios de ${regiaoAtual.nome} · OVR médio: ${avg}`;
+  document.getElementById('time-sub').textContent=`Ginásios de ${regiaoAtual.nome}`;
+  document.getElementById('time-ovr').textContent=`Overall médio do seu time: ${avg}`;
   document.getElementById('team-grid').innerHTML=team.map((p,i)=>`
     <div class="team-card">
       ${p.shiny?'<div class="team-shiny">✨</div>':''}
       ${imgTag(p.id,58,58,p.shiny)}
       <div class="team-name">${i+1}. ${p.name}</div>
       <div class="team-ovr" style="color:${ovrColor(p.ovr)}">${p.ovr}</div>
-      <div class="team-meta">${p.types.join('/')}${p.legendary?' ⭐':''}</div>
+      <div class="team-meta">${typeIcons(p.types,12)}${p.legendary?' ⭐':''}</div>
     </div>`).join('');
 }
 
@@ -1091,9 +1106,8 @@ let _modoAuto=false;
 function toggleAuto(){
   _modoAuto=!_modoAuto;
   const btn=document.getElementById('btn-auto');
-  btn.textContent=_modoAuto ? '🤖 Auto: ON — clique para pausar' : '🤖 Jogo automático';
+  btn.textContent=_modoAuto?'Automático: on':'Automático: off';
   btn.className='btn btn-auto'+(_modoAuto?' on':'');
-  // se está esperando ação e acabou de ligar, resolve imediatamente
   if(_modoAuto && _acaoResolve){ escolherAcaoAuto(); }
 }
 
@@ -1144,7 +1158,8 @@ async function irSimular(){
   clearLog();
   setAcoesAtivas(false);
   document.getElementById('sim-lbl').textContent=
-    `${regiaoAtual.nome} · ${regiaoAtual.gen} · ${difficulty==='easy'?'Fácil':'Difícil'} · Nível 50`;
+    `${regiaoAtual.nome} · ${regiaoAtual.gen} · ${difficulty==='easy'?'Fácil':'Difícil'}`;
+  document.getElementById('sim-lbl-lider').textContent=regiaoAtual.gyms[0]?.lider||'—';
   document.getElementById('final-card').style.display='none';
   document.getElementById('btns-final').style.display='none';
   document.getElementById('placar').style.display='none';
@@ -1163,6 +1178,9 @@ async function irSimular(){
     document.getElementById('placar').style.display='block';
     document.getElementById('placar').textContent=`${v} – ${d}`;
     adicionarLinhaGinasio(gi, regiaoAtual.gyms[gi], log, v, d);
+    // se time todo morto, encerra imediatamente sem continuar ginásios
+    const todosMortos=teamState.every(p=>p.fainted);
+    if(todosMortos) break;
     // transição entre ginásios
     const proximoGym = regiaoAtual.gyms[gi+1] || null;
     if(gi < regiaoAtual.gyms.length-1){
@@ -1227,6 +1245,8 @@ async function simularGinasio(gi,gym){
     // ── JOGADOR ESCOLHE AÇÃO ──
     _playerIdxGlobal=playerIdx;
     _gymAtual=gym;
+  const liderEl=document.getElementById('sim-lbl-lider');
+  if(liderEl) liderEl.textContent=gym.lider;
     addLogLine('turn',`${teamState[playerIdx].name} vs ${curG.nome} — O que você faz?`);
     const acao=await aguardarAcao();
     if(acao==='desistir'){
@@ -1474,26 +1494,43 @@ function abrirHistorico(){
   }
 }
 
-function typePills(types){
+const TYPE_ID={normal:1,fighting:2,flying:3,poison:4,ground:5,rock:6,
+  bug:7,ghost:8,steel:9,fire:10,water:11,grass:12,electric:13,
+  psychic:14,ice:15,dragon:16,dark:17,fairy:18};
+const TYPE_SPR=t=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-ix/scarlet-violet/${TYPE_ID[t]||1}.png`;
+const TYPE_LABEL={normal:'Normal',fighting:'Lutador',flying:'Voador',poison:'Venenoso',
+  ground:'Terra',rock:'Pedra',bug:'Inseto',ghost:'Fantasma',steel:'Aço',fire:'Fogo',
+  water:'Água',grass:'Planta',electric:'Elétrico',psychic:'Psíquico',ice:'Gelo',
+  dragon:'Dragão',dark:'Sombrio',fairy:'Fada'};
+
+function typeIcons(types, h=12){
   if(!types) return '';
-  return types.map(t=>`<span class="type-pill" style="background:${TC[t]||'#ccc'};color:${TT[t]||'#000'}">${t}</span>`).join('');
+  const w=h*5;
+  return types.map(t=>`<img class="type-img" src="${TYPE_SPR(t)}" title="${TYPE_LABEL[t]||t}" alt="${TYPE_LABEL[t]||t}" style="width:${w}px!important;height:${h}px!important;display:inline-block;vertical-align:middle;image-rendering:pixelated">`).join(' ');
 }
 
 function setArenaFighters(player,gym,gymPoke){
-  // Player: nome, OVR colorido grande, tipagem
-  document.getElementById('af-player').innerHTML=player
-    ?`${imgTag(player.id,80,80,player.shiny)}
-      <div class="fighter-name">${player.name}${player.shiny?' ✨':''}</div>
-      <div class="fighter-ovr" style="color:${ovrColor(player.ovr)}">${player.ovr}</div>
-      <div class="fighter-types">${typePills(player.types)}</div>`
-    :`<div style="font-size:32px;opacity:.3">💀</div><div class="fighter-name">—</div>`;
-  // Inimigo: nome, HP max como referência, tipo do ginásio
-  document.getElementById('af-enemy').innerHTML=gymPoke
-    ?`${imgTag(gymPoke.id,80,80)}
-      <div class="fighter-name">${gymPoke.nome}</div>
-      <div class="fighter-ovr" style="color:${TC[gym.tipoN]||'#888'};font-size:13px">${gym.lider}</div>
-      <div class="fighter-types"><span class="type-pill" style="background:${TC[gym.tipoN]||'#ccc'};color:${TT[gym.tipoN]||'#000'}">${gym.tipo}</span></div>`
-    :`<div style="font-size:32px;opacity:.3">—</div>`;
+  // Função helper: card de fighter simétrico
+  const fighterCard=(id,name,ovr,types,shiny,isPlayer)=>{
+    if(!id) return `<div style="opacity:.3;font-size:28px">💀</div>`;
+    return `${imgTag(id,80,80,shiny)}
+      <div class="fighter-name">${name}${shiny?' ✨':''}</div>
+      <div class="fighter-ovr" style="color:${ovrColor(ovr)}">${ovr}</div>
+      <div class="fighter-types">${typeIcons(types,13)}</div>`;
+  };
+  document.getElementById('af-player').innerHTML = player
+    ? fighterCard(player.id, player.name, player.ovr, player.types, player.shiny, true)
+    : fighterCard(null);
+  document.getElementById('af-enemy').innerHTML = gymPoke
+    ? (()=>{
+        // OVR estimado a partir do maxHp do líder
+        const gi=regiaoAtual.gyms.indexOf(gym);
+        const hpCorr=(gymPoke.maxHp||100)/1.25/(1+Math.max(0,gi)*0.08);
+        const bstEst=((hpCorr-40)/80)*720;
+        const ovrEst=Math.max(1,Math.min(99,Math.round(1+((bstEst-195)/(720-195))*98)));
+        return fighterCard(gymPoke.id, gymPoke.nome, ovrEst, [gym.tipoN], false, false);
+      })()
+    : `<div style="opacity:.3;font-size:28px">—</div>`;
 }
 
 function renderGymPokes(gymPokes,activeIdx){
