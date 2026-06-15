@@ -110,6 +110,75 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 .team-shiny{position:absolute;top:6px;right:8px;font-size:13px}
 .team-card.fainted{opacity:.4;filter:grayscale(1)}
 
+
+/* FIGHTER INFO melhorado */
+.fighter-ovr{font-size:20px;font-weight:800;line-height:1;margin-bottom:4px}
+.fighter-types{display:flex;gap:3px;justify-content:center;flex-wrap:wrap;margin-top:2px}
+
+/* MINI LOG */
+.arena-log{padding:.5rem 1rem;font-size:11.5px;color:var(--text2);line-height:1.55;max-height:76px;overflow-y:auto;display:flex;flex-direction:column;gap:1px}
+.log-entry{padding:1px 0;border-bottom:1px solid var(--border)}
+.log-entry:last-child{border-bottom:none}
+.log-entry.win{color:#1a5c1a;font-weight:600}
+.log-entry.lose{color:#8b1a1a;font-weight:600}
+.log-entry.swap{color:#0a3a6b}
+
+/* BOTÕES INFERIORES DA SIM */
+.sim-bottom-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:.75rem}
+.btn-auto{background:var(--bg2);border:1.5px solid var(--border2);color:var(--text)}
+.btn-auto.on{background:#E6F1FB;border-color:#378ADD;color:#0C447C}
+.btn-desistir{border-color:#8b1a1a;color:#8b1a1a;background:var(--bg)}
+.btn-desistir:hover{background:#fff0f0}
+
+/* TURNO INDICATOR */
+.turno-badge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;margin-bottom:.5rem}
+.turno-badge.sua-vez{background:#E6F1FB;color:#0C447C}
+.turno-badge.aguardando{background:var(--bg2);color:var(--text3)}
+
+/* ARENA FIGHTERS — layout melhorado */
+.fighter-side{text-align:center;position:relative;flex:1}
+.fighter-side img{width:80px;height:80px;image-rendering:pixelated;display:block;margin:0 auto 6px}
+.fighter-name{font-size:13px;font-weight:800;color:var(--text);margin-bottom:3px}
+.fighter-ovr{font-size:18px;font-weight:800;margin-bottom:3px}
+.fighter-types{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
+
+/* MINI LOG ROLÁVEL */
+.arena-log-wrap{border-top:1px solid var(--border);background:var(--bg)}
+.arena-log{padding:.5rem 1rem;font-size:12px;color:var(--text2);line-height:1.6;max-height:80px;overflow-y:auto;display:flex;flex-direction:column;gap:2px}
+.arena-log-line{padding:1px 0}
+.arena-log-line.win{color:#1a5c1a;font-weight:600}
+.arena-log-line.lose{color:#8b1a1a;font-weight:600}
+.arena-log-line.swap{color:#0a3a6b}
+
+/* HP bars maiores */
+.hp-block{padding:.625rem 1rem;border-bottom:1px solid var(--border)}
+.hp-row-label{display:flex;justify-content:space-between;font-size:12px;font-weight:600;color:var(--text);margin-bottom:4px}
+.hp-val{font-size:12px;font-weight:700}
+.hp-bg{height:8px;background:var(--bg3);border-radius:4px;overflow:hidden;margin-bottom:.625rem}
+.hp-fill{height:8px;border-radius:4px;transition:width .4s ease}
+
+/* TELA DE TRANSIÇÃO entre ginásios */
+.gym-transition{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:center;justify-content:center;flex-direction:column;gap:12px}
+.gym-transition.show{display:flex}
+.gym-transition-icon{font-size:48px}
+.gym-transition-title{font-size:20px;font-weight:800;color:#fff}
+.gym-transition-sub{font-size:13px;color:rgba(255,255,255,.7)}
+
+/* ORDEM — botões ↑↓ em vez de drag */
+.order-card{display:grid;grid-template-columns:32px 44px 1fr auto;align-items:center;gap:10px;padding:.625rem .875rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);transition:.15s}
+.order-arrows{display:flex;flex-direction:column;gap:2px}
+.order-arrow{background:none;border:1px solid var(--border2);border-radius:5px;width:26px;height:22px;cursor:pointer;font-size:11px;color:var(--text2);display:flex;align-items:center;justify-content:center;transition:.1s}
+.order-arrow:hover:not(:disabled){background:var(--bg3);color:var(--text)}
+.order-arrow:disabled{opacity:.2;cursor:default}
+
+/* MODAL DE SAÍDA do draft */
+.confirm-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:150;align-items:center;justify-content:center;padding:1rem}
+.confirm-overlay.show{display:flex}
+.confirm-box{background:var(--bg);border-radius:var(--r);padding:1.5rem;width:100%;max-width:340px}
+.confirm-title{font-size:16px;font-weight:800;margin-bottom:.5rem}
+.confirm-sub{font-size:13px;color:var(--text2);margin-bottom:1.25rem;line-height:1.5}
+.confirm-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+
 /* SIMULAÇÃO */
 .sim-eyebrow{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:.5rem}
 .battle-arena{border:1px solid var(--border);border-radius:var(--r);background:var(--bg2);overflow:hidden;margin-bottom:1rem}
@@ -296,7 +365,7 @@ footer{text-align:center;padding:2rem 0 1.5rem;font-size:11px;color:var(--text3)
 
 <!-- DRAFT -->
 <div id="s-draft" class="screen">
-  <button class="back" onclick="show('s-home')">← Início</button>
+  <button class="back" onclick="confirmarSaidaDraft()">← Início</button>
   <!-- Banner da região sorteda para os ginásios -->
   <div class="draft-regiao-banner" id="draft-regiao-banner">
     <div class="draft-regiao-img" id="draft-regiao-img">
@@ -319,11 +388,29 @@ footer{text-align:center;padding:2rem 0 1.5rem;font-size:11px;color:var(--text3)
 
 <!-- ORDEM DO TIME -->
 <div id="s-ordem" class="screen">
-  <button class="back" onclick="show('s-draft')">← Voltar ao draft</button>
   <div class="order-header">Defina a ordem do time</div>
-  <div class="order-sub">Arraste para reordenar. O primeiro luta primeiro em cada ginásio, e quando cair passa para o próximo.</div>
+  <div class="order-sub">Use as setas para reordenar. O primeiro luta primeiro em cada ginásio.</div>
   <div class="order-list" id="order-list"></div>
   <button class="btn btn-dark" onclick="confirmarOrdem()">Confirmar ordem e ver time →</button>
+</div>
+
+<!-- MODAL CONFIRMAÇÃO SAÍDA DRAFT -->
+<div class="confirm-overlay" id="confirm-draft" onclick="fecharConfirm(event)">
+  <div class="confirm-box">
+    <div class="confirm-title">Sair do draft?</div>
+    <div class="confirm-sub">Você perderá os pokémons escolhidos até agora e voltará ao início.</div>
+    <div class="confirm-btns">
+      <button class="btn" onclick="fecharConfirmBox()">Continuar</button>
+      <button class="btn btn-dark" onclick="sairDraftConfirmado()">Sair</button>
+    </div>
+  </div>
+</div>
+
+<!-- TELA DE TRANSIÇÃO ENTRE GINÁSIOS -->
+<div class="gym-transition" id="gym-transition">
+  <div class="gym-transition-icon" id="gt-icon">🏅</div>
+  <div class="gym-transition-title" id="gt-title">Ginásio vencido!</div>
+  <div class="gym-transition-sub" id="gt-sub">Próximo: Misty (Água)</div>
 </div>
 
 <!-- TIME -->
@@ -338,21 +425,21 @@ footer{text-align:center;padding:2rem 0 1.5rem;font-size:11px;color:var(--text3)
 
 <!-- SIMULAÇÃO -->
 <div id="s-sim" class="screen">
-  <button class="back" onclick="show('s-time')">← Ver time</button>
   <p class="sim-eyebrow" id="sim-lbl">—</p>
+  <div id="turno-badge" class="turno-badge aguardando" style="display:none">⏳ Aguardando…</div>
   <div class="battle-arena" id="battle-arena" style="display:none">
-    <div class="arena-fighters">
+    <div class="arena-fighters" style="display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:.875rem 1rem;border-bottom:1px solid var(--border);gap:8px">
       <div class="fighter-side" id="af-player"></div>
       <div class="arena-vs">VS</div>
       <div class="fighter-side" id="af-enemy"></div>
     </div>
     <div class="hp-block">
-      <div class="hp-row-label"><span id="hp-p-name">—</span><span id="hp-p-val">100%</span></div>
+      <div class="hp-row-label"><span id="hp-p-name">—</span><span class="hp-val" id="hp-p-val">100%</span></div>
       <div class="hp-bg"><div class="hp-fill" id="hp-p-bar" style="width:100%;background:#1a5c1a"></div></div>
-      <div class="hp-row-label"><span id="hp-e-name">—</span><span id="hp-e-val">100%</span></div>
+      <div class="hp-row-label"><span id="hp-e-name">—</span><span class="hp-val" id="hp-e-val">100%</span></div>
       <div class="hp-bg"><div class="hp-fill" id="hp-e-bar" style="width:100%;background:#8b1a1a"></div></div>
     </div>
-    <div class="arena-log" id="arena-log">—</div>
+    <div class="arena-log-wrap"><div class="arena-log" id="arena-log"></div></div>
     <div class="gym-pokes-row" id="gym-pokes-row"></div>
     <div class="player-team-row" id="player-team-row"></div>
     <!-- PAINEL DE AÇÕES -->
@@ -388,6 +475,11 @@ footer{text-align:center;padding:2rem 0 1.5rem;font-size:11px;color:var(--text3)
         <button class="swap-cancel" onclick="fecharSwapPanel()">← Cancelar</button>
       </div>
     </div>
+  </div>
+  <!-- botões de controle da batalha -->
+  <div class="sim-bottom-btns" id="sim-bottom-btns" style="display:none">
+    <button class="btn btn-auto" id="btn-auto" onclick="toggleAuto()">🤖 Jogo automático</button>
+    <button class="btn btn-desistir" onclick="desistir()">🏳️ Desistir</button>
   </div>
   <!-- placar e histórico DURANTE a batalha -->
   <div class="placar" id="placar" style="display:none">0 – 0</div>
@@ -555,7 +647,24 @@ const POKE_DB={
 };
 Object.values(POKE_DB).forEach(arr=>arr.forEach(p=>{p.ovr=ovr(p.bst);}));
 const POOL_KEYS=Object.keys(POKE_DB);
-const allIds=new Set();Object.values(POKE_DB).forEach(arr=>arr.forEach(p=>allIds.add(p.id)));
+
+/* Pool global: todos os pokémons com chave embutida, deduplicados por id */
+const POOL_GLOBAL=(()=>{
+  const seen=new Set();
+  const list=[];
+  for(const [chave,arr] of Object.entries(POKE_DB)){
+    const [regN,genL]=chave.split('-');
+    for(const p of arr){
+      if(!seen.has(p.id)){
+        seen.add(p.id);
+        list.push({...p, _regiao:regN, _gen:`Gen ${genL}`, _chave:chave});
+      }
+    }
+  }
+  return list;
+})();
+
+const allIds=new Set(POOL_GLOBAL.map(p=>p.id));
 document.getElementById('stat-total').textContent=allIds.size;
 document.getElementById('stat-regioes').textContent=REGIOES.length;
 document.getElementById('stat-gyms').textContent=REGIOES.reduce((s,r)=>s+r.gyms.length,0);
@@ -592,7 +701,7 @@ function selDiff(el,d){document.querySelectorAll('.diff-card').forEach(c=>c.clas
 
 /* ══ SORTEIO ══ */
 async function rolarDado(){
-  team=[];rerollsLeft=3;usadosNoDraft.clear();battleLogs=[];teamState=[];
+  team=[];rerollsLeft=3;usadosNoDraft.clear();_vistosDraft.clear();battleLogs=[];teamState=[];
   show('s-sorteio');
   const dado=document.getElementById('dado-ico');dado.classList.add('rolling');
   const emojis=['🎲','🎯','🎰','🎲'];
@@ -605,7 +714,7 @@ async function rolarDado(){
 
 /* ══ DRAFT ══ */
 function iniciarDraft(){
-  team=[];rerollsLeft=3;usadosNoDraft.clear();
+  team=[];rerollsLeft=3;usadosNoDraft.clear();_vistosDraft.clear();
 
   // Banner da região: reconstrói do zero para evitar acúmulo
   const dri=document.getElementById('draft-regiao-img');
@@ -633,9 +742,6 @@ function iniciarDraft(){
 
 function proximaRodada(){
   const rodada=team.length+1;
-  const chave=POOL_KEYS[Math.floor(Math.random()*POOL_KEYS.length)];
-  window._draftChave=chave;
-  const [regN,genL]=chave.split('-');
   const ords=['1º','2º','3º','4º','5º','6º'];
   document.getElementById('draft-slots').innerHTML=Array.from({length:6},(_,i)=>{
     if(i<team.length)return`<div class="slot filled">${imgTag(team[i].id,38,38,team[i].shiny)}</div>`;
@@ -643,7 +749,7 @@ function proximaRodada(){
     return`<div class="slot"></div>`;
   }).join('');
   document.getElementById('dr-round').textContent=`Rodada ${rodada} de 6`;
-  document.getElementById('dr-pool').textContent=`Pokémons de ${regN} · Gen ${genL}`;
+  document.getElementById('dr-pool').textContent=`${allIds.size - usadosNoDraft.size} pokémons disponíveis`;
   document.getElementById('dr-label').textContent=`Escolha seu ${ords[team.length]} pokémon`;
   atualizarRerollUI();gerarOferta();escolhaNaRodada=null;document.getElementById('btn-confirmar').disabled=true;
 }
@@ -657,13 +763,25 @@ function atualizarRerollUI(){
 
 function sortearNovos(){if(rerollsLeft<=0)return;rerollsLeft--;escolhaNaRodada=null;gerarOferta();atualizarRerollUI();document.getElementById('btn-confirmar').disabled=true;}
 
+/* Pool já visto neste draft (inclui escolhidos E os que foram mostrados) */
+const _vistosDraft=new Set();
+
 function gerarOferta(){
-  const pool=POKE_DB[window._draftChave];
+  // Pool disponível: não escolhido e não mostrado ainda neste draft
+  const disponivel=POOL_GLOBAL.filter(p=>!usadosNoDraft.has(p.id)&&!_vistosDraft.has(p.id));
+  // peso: lendários têm peso 1, normais peso 20
   const weighted=[];
-  pool.forEach(p=>{if(usadosNoDraft.has(p.id))return;const w=p.legendary?1:20;for(let i=0;i<w;i++)weighted.push(p);});
-  const vistos=new Set();const oferta=[];
-  for(const p of shuffle(weighted)){if(!vistos.has(p.id)){vistos.add(p.id);oferta.push(p);}if(oferta.length===5)break;}
-  if(oferta.length<5){for(const p of pool){if(!vistos.has(p.id)){vistos.add(p.id);oferta.push(p);}if(oferta.length===5)break;}}
+  disponivel.forEach(p=>{const w=p.legendary?1:20;for(let i=0;i<w;i++)weighted.push(p);});
+  // fallback: se sobrar menos de 5, reabre os vistos (mas não os escolhidos)
+  let pool = weighted.length>=5 ? weighted : POOL_GLOBAL.filter(p=>!usadosNoDraft.has(p.id));
+  const vistos=new Set();
+  const oferta=[];
+  for(const p of shuffle(pool)){
+    if(!vistos.has(p.id)){vistos.add(p.id);oferta.push(p);}
+    if(oferta.length===5)break;
+  }
+  // marca como vistos para não repetir nas próximas rodadas
+  oferta.forEach(p=>_vistosDraft.add(p.id));
   ofertaAtual=oferta.map(p=>({...p,shiny:Math.random()<(1/128)}));
   renderOfertas();
 }
@@ -679,7 +797,7 @@ function renderOfertas(){
       </div>
       <div>
         <div class="poke-name">${p.name}${p.shiny?' ✨':''}</div>
-        <div class="poke-meta">${p.types.map(pill).join('')}<span class="poke-region-gen">${window._draftChave}</span></div>
+        <div class="poke-meta">${p.types.map(pill).join('')}<span class="poke-region-gen">${p._regiao||''} · ${p._gen||''}</span></div>
       </div>
       <div class="poke-ovr-col">
         ${hideOvr
@@ -709,24 +827,26 @@ function irOrdem(){
 function renderOrdem(){
   const list=document.getElementById('order-list');
   list.innerHTML=team.map((p,i)=>`
-    <div class="order-card" draggable="true" data-idx="${i}"
-      ondragstart="dragStart(event,${i})" ondragover="dragOver(event,${i})"
-      ondrop="dragDrop(event,${i})" ondragleave="dragLeave(event)" ondragend="dragEnd(event)">
+    <div class="order-card">
       <div class="order-num">${i+1}</div>
       ${imgTag(p.id,40,40,p.shiny)}
       <div class="order-info">
         <div class="order-name">${p.name}${p.shiny?' ✨':''}</div>
-        <div class="order-meta">${p.types.join('/')}${p.legendary?' ⭐':''} · OVR ${difficulty==='hard'?'?':p.ovr}</div>
+        <div class="order-meta">${p.types.map(t=>`<span class="type-pill" style="background:${TC[t]||'#ccc'};color:${TT[t]||'#000'}">${t}</span>`).join('')}${p.legendary?' ⭐':''} · OVR ${difficulty==='hard'?'?':p.ovr}</div>
       </div>
-      <div class="order-drag-handle">⠿</div>
+      <div class="order-arrows">
+        <button class="order-arrow" onclick="moverOrdem(${i},-1)" ${i===0?'disabled':''}>▲</button>
+        <button class="order-arrow" onclick="moverOrdem(${i},1)" ${i===team.length-1?'disabled':''}>▼</button>
+      </div>
     </div>`).join('');
 }
 
-function dragStart(e,idx){dragSrcIdx=idx;e.currentTarget.classList.add('dragging');}
-function dragOver(e,idx){e.preventDefault();if(idx!==dragSrcIdx){document.querySelectorAll('.order-card').forEach(c=>c.classList.remove('drag-over'));e.currentTarget.classList.add('drag-over');}}
-function dragLeave(e){e.currentTarget.classList.remove('drag-over');}
-function dragDrop(e,idx){e.preventDefault();if(dragSrcIdx===null||dragSrcIdx===idx)return;const moved=team.splice(dragSrcIdx,1)[0];team.splice(idx,0,moved);renderOrdem();}
-function dragEnd(e){e.currentTarget.classList.remove('dragging');document.querySelectorAll('.order-card').forEach(c=>c.classList.remove('drag-over'));dragSrcIdx=null;}
+function moverOrdem(idx,dir){
+  const novoIdx=idx+dir;
+  if(novoIdx<0||novoIdx>=team.length) return;
+  [team[idx],team[novoIdx]]=[team[novoIdx],team[idx]];
+  renderOrdem();
+}
 
 function confirmarOrdem(){
   show('s-time');
@@ -760,12 +880,13 @@ function renderBag(){
 let _acaoResolve = null;
 let _playerIdxGlobal = 0;
 
-function setAcoesAtivas(ativo, curP){
-  document.getElementById('btn-atacar').disabled  = !ativo;
-  document.getElementById('btn-trocar').disabled  = !ativo;
-  document.getElementById('btn-potion').disabled  = !ativo || bag.potion<=0;
-  document.getElementById('btn-revive').disabled  = !ativo || bag.revive<=0
+function setAcoesAtivas(ativo){
+  document.getElementById('btn-atacar').disabled = !ativo;
+  document.getElementById('btn-trocar').disabled = !ativo;
+  document.getElementById('btn-potion').disabled = !ativo || bag.potion<=0;
+  document.getElementById('btn-revive').disabled = !ativo || bag.revive<=0
     || !teamState.some(p=>p.fainted);
+  if(!ativo) setTurnoBadge('aguardando');
 }
 
 function escolherAcao(tipo){
@@ -824,7 +945,13 @@ function fecharSwapPanel(){
 }
 
 function aguardarAcao(){
-  return new Promise(r=>{ _acaoResolve=r; setAcoesAtivas(true); });
+  return new Promise(r=>{
+    _acaoResolve=r;
+    setAcoesAtivas(true);
+    setTurnoBadge('sua');
+    // modo automático: decide na próxima microtask
+    if(_modoAuto){ setTimeout(()=>escolherAcaoAuto(),350); }
+  });
 }
 
 /* ── Efetividade ── */
@@ -887,15 +1014,134 @@ async function animAtaque(atacanteId, receptorId, tipoN, dmg){
   if(re) re.classList.remove('flash');
 }
 
-function setLog(html){ document.getElementById('arena-log').innerHTML=html; }
+/* ── Mini log rolável ── */
+const _logLines=[];
+function addLogLine(type,text){
+  _logLines.push({type,text});
+  const el=document.getElementById('arena-log');
+  if(!el) return;
+  const div=document.createElement('div');
+  div.className=`log-entry ${type}`;
+  div.innerHTML=text;
+  el.appendChild(div);
+  el.scrollTop=el.scrollHeight;
+}
+function clearLog(){
+  _logLines.length=0;
+  const el=document.getElementById('arena-log');
+  if(el) el.innerHTML='';
+}
+function setLog(html){ addLogLine('turn',html); }
+
+/* ── Turno badge ── */
+function setTurnoBadge(state){
+  const b=document.getElementById('turno-badge');
+  if(!b) return;
+  b.style.display='inline-flex';
+  if(state==='sua'){
+    b.className='turno-badge sua-vez';
+    b.textContent='⚔️ Sua vez!';
+  } else {
+    b.className='turno-badge aguardando';
+    b.textContent='⏳ Aguardando…';
+  }
+}
+
+/* ── Modal saída do draft ── */
+function confirmarSaidaDraft(){
+  if(team.length===0){ show('s-home'); return; }
+  document.getElementById('confirm-draft').classList.add('show');
+}
+function fecharConfirm(e){
+  if(e.target===document.getElementById('confirm-draft')) fecharConfirmBox();
+}
+function fecharConfirmBox(){
+  document.getElementById('confirm-draft').classList.remove('show');
+}
+function sairDraftConfirmado(){
+  fecharConfirmBox();
+  rolarDado();
+}
+
+/* ── Transição entre ginásios ── */
+async function mostrarTransicao(ganhou, gym, proximoGym){
+  const el=document.getElementById('gym-transition');
+  document.getElementById('gt-icon').textContent = ganhou ? '🏅' : '💀';
+  document.getElementById('gt-title').textContent = ganhou
+    ? `${gym.lider} vencido!`
+    : `Derrota contra ${gym.lider}`;
+  document.getElementById('gt-sub').textContent = proximoGym
+    ? `Próximo: ${proximoGym.lider} (${proximoGym.tipo})`
+    : '🏁 Última batalha!';
+  el.classList.add('show');
+  await sleep(1500);
+  el.classList.remove('show');
+}
+
+/* ── Desistir ── */
+function desistir(){
+  if(!confirm('Desistir da run? Ela será salva no histórico como desistência.')) return;
+  if(_acaoResolve){ const r=_acaoResolve; _acaoResolve=null; r('desistir'); }
+  _modoAuto=false;
+}
+
+/* ── Jogo automático ── */
+let _modoAuto=false;
+
+function toggleAuto(){
+  _modoAuto=!_modoAuto;
+  const btn=document.getElementById('btn-auto');
+  btn.textContent=_modoAuto ? '🤖 Auto: ON — clique para pausar' : '🤖 Jogo automático';
+  btn.className='btn btn-auto'+(_modoAuto?' on':'');
+  // se está esperando ação e acabou de ligar, resolve imediatamente
+  if(_modoAuto && _acaoResolve){ escolherAcaoAuto(); }
+}
+
+function escolherAcaoAuto(){
+  if(!_acaoResolve || !_modoAuto) return;
+  const curP=teamState[_playerIdxGlobal];
+  if(!curP) { escolherAcao('atacar'); return; }
+
+  // Usa Revive se alguém morreu e tem revive
+  const morto=teamState.find(p=>p.fainted);
+  if(morto && bag.revive>0){
+    const ni=teamState.indexOf(morto);
+    confirmarSwap('revive',ni);
+    return;
+  }
+  // Usa Potion se HP crítico (<= 25%)
+  if(curP.hp<=25 && bag.potion>0){
+    escolherAcao('potion');
+    return;
+  }
+  // Troca por pokémon com melhor cobertura de tipo se atual é ineficaz
+  if(_gymAtual){
+    const multAtual=getEff(curP.types,_gymAtual.tipoN);
+    if(multAtual<1){
+      const melhor=teamState
+        .filter((p,i)=>!p.fainted && i!==_playerIdxGlobal)
+        .sort((a,b)=>getEff(b.types,_gymAtual.tipoN)-getEff(a.types,_gymAtual.tipoN))[0];
+      if(melhor && getEff(melhor.types,_gymAtual.tipoN)>multAtual){
+        confirmarSwap('trocar',teamState.indexOf(melhor));
+        return;
+      }
+    }
+  }
+  // Padrão: atacar
+  escolherAcao('atacar');
+}
 
 /* ── irSimular ── */
 async function irSimular(){
   show('s-sim'); battleLogs=[];
+  _modoAuto=false;
+  const autoBtn=document.getElementById('btn-auto');
+  if(autoBtn){ autoBtn.textContent='🤖 Jogo automático'; autoBtn.className='btn btn-auto'; }
   if(teamState.length===0){
     teamState=team.map(p=>({...p,hp:100,maxHp:100,fainted:false,winsCount:0}));
   }
   initBag();
+  clearLog();
   setAcoesAtivas(false);
   document.getElementById('sim-lbl').textContent=
     `${regiaoAtual.nome} · ${regiaoAtual.gen} · ${difficulty==='easy'?'Fácil':'Difícil'} · Nível 50`;
@@ -903,7 +1149,10 @@ async function irSimular(){
   document.getElementById('btns-final').style.display='none';
   document.getElementById('placar').style.display='none';
   document.getElementById('gym-log-rows').innerHTML='';
+  document.getElementById('gym-log-rows').style.display='block';
   document.getElementById('battle-arena').style.display='block';
+  document.getElementById('sim-bottom-btns').style.display='grid';
+  document.getElementById('turno-badge').style.display='inline-flex';
 
   let v=0,d=0;
   for(let gi=0;gi<regiaoAtual.gyms.length;gi++){
@@ -914,10 +1163,19 @@ async function irSimular(){
     document.getElementById('placar').style.display='block';
     document.getElementById('placar').textContent=`${v} – ${d}`;
     adicionarLinhaGinasio(gi, regiaoAtual.gyms[gi], log, v, d);
+    // transição entre ginásios
+    const proximoGym = regiaoAtual.gyms[gi+1] || null;
+    if(gi < regiaoAtual.gyms.length-1){
+      await mostrarTransicao(log.ganhou, regiaoAtual.gyms[gi], proximoGym);
+      clearLog();
+    }
   }
 
   await sleep(400);
+  _modoAuto=false;
   document.getElementById('battle-arena').style.display='none';
+  document.getElementById('sim-bottom-btns').style.display='none';
+  document.getElementById('turno-badge').style.display='none';
   document.getElementById('placar').style.display='none';
   document.getElementById('gym-log-rows').style.display='none';
   mostrarFimDeRun(v,d);
@@ -930,7 +1188,10 @@ async function simularGinasio(gi,gym){
   const gymPokes=gym.pokes.map(p=>({...p,fainted:false}));
   let gymIdx=0, ganhou=false;
 
-  const addLog=(type,text)=>{ logs.push({type,text}); setLog(text); };
+  const addLog=(type,text)=>{
+    logs.push({type,text});
+    addLogLine(type,text);
+  };
 
   let playerIdx=teamState.findIndex(p=>!p.fainted);
   if(playerIdx===-1){
@@ -965,8 +1226,14 @@ async function simularGinasio(gi,gym){
 
     // ── JOGADOR ESCOLHE AÇÃO ──
     _playerIdxGlobal=playerIdx;
-    setLog(`${teamState[playerIdx].name} vs ${curG.nome} — O que você faz?`);
+    _gymAtual=gym;
+    addLogLine('turn',`${teamState[playerIdx].name} vs ${curG.nome} — O que você faz?`);
     const acao=await aguardarAcao();
+    if(acao==='desistir'){
+      salvarRun('D','D','🏳️',true);
+      show('s-home');
+      return{ganhou:false,logs,gym,gi,lidId:gym.liderId,heroPoke:teamState[playerIdx]};
+    }
 
     curP=teamState[playerIdx]; // pode ter mudado via trocar
 
@@ -1164,7 +1431,7 @@ function mostrarFimDeRun(v,d){
 }
 
 /* -- Histórico -- */
-function salvarRun(v,d,emoji){
+function salvarRun(v,d,emoji,desistiu=false){
   try{
     const hist=JSON.parse(localStorage.getItem('pokerun_hist')||'[]');
     const run={
@@ -1172,7 +1439,7 @@ function salvarRun(v,d,emoji){
       regiao:regiaoAtual.nome,
       gen:regiaoAtual.gen,
       diff:difficulty,
-      placar:`${v}–${d}`,
+      placar:desistiu?`🏳️ Desistiu`:`${v}–${d}`,
       emoji,
       team:teamState.map(p=>({id:p.id,name:p.name,ovr:p.ovr,shiny:p.shiny,fainted:p.fainted}))
     };
@@ -1207,12 +1474,25 @@ function abrirHistorico(){
   }
 }
 
+function typePills(types){
+  if(!types) return '';
+  return types.map(t=>`<span class="type-pill" style="background:${TC[t]||'#ccc'};color:${TT[t]||'#000'}">${t}</span>`).join('');
+}
+
 function setArenaFighters(player,gym,gymPoke){
+  // Player: nome, OVR colorido grande, tipagem
   document.getElementById('af-player').innerHTML=player
-    ?`${imgTag(player.id,72,72,player.shiny)}<div class="fighter-name">${player.name}${player.shiny?' ✨':''}</div><div class="fighter-sub">OVR ${player.ovr} · Nível 50</div>`
+    ?`${imgTag(player.id,80,80,player.shiny)}
+      <div class="fighter-name">${player.name}${player.shiny?' ✨':''}</div>
+      <div class="fighter-ovr" style="color:${ovrColor(player.ovr)}">${player.ovr}</div>
+      <div class="fighter-types">${typePills(player.types)}</div>`
     :`<div style="font-size:32px;opacity:.3">💀</div><div class="fighter-name">—</div>`;
+  // Inimigo: nome, HP max como referência, tipo do ginásio
   document.getElementById('af-enemy').innerHTML=gymPoke
-    ?`${imgTag(gymPoke.id,72,72)}<div class="fighter-name">${gymPoke.nome}</div><div class="fighter-sub">${gym.lider} · ${gym.tipo}</div>`
+    ?`${imgTag(gymPoke.id,80,80)}
+      <div class="fighter-name">${gymPoke.nome}</div>
+      <div class="fighter-ovr" style="color:${TC[gym.tipoN]||'#888'};font-size:13px">${gym.lider}</div>
+      <div class="fighter-types"><span class="type-pill" style="background:${TC[gym.tipoN]||'#ccc'};color:${TT[gym.tipoN]||'#000'}">${gym.tipo}</span></div>`
     :`<div style="font-size:32px;opacity:.3">—</div>`;
 }
 
