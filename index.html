@@ -165,6 +165,32 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem;text-align:center}
 .sim-lbl-regiao{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--text3)}
 .sim-lbl-lider{font-size:16px;font-weight:800;color:var(--text);margin-top:2px}
 
+
+/* CONFETE vitória perfeita */
+@keyframes confete-cai{0%{transform:translateY(-20px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.confete-piece{position:fixed;top:-10px;width:8px;height:8px;border-radius:2px;pointer-events:none;z-index:500;animation:confete-cai linear forwards}
+
+/* FADE tela final */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.final-card.show{animation:fadeInUp .45s ease forwards}
+
+/* INDICADOR posição no time */
+.team-pos-first{position:absolute;top:6px;left:8px;font-size:9px;font-weight:700;background:#1a5c1a;color:#fff;padding:1px 5px;border-radius:4px;letter-spacing:.03em}
+.team-pos-last{position:absolute;top:6px;left:8px;font-size:9px;font-weight:700;background:#8b1a1a;color:#fff;padding:1px 5px;border-radius:4px;letter-spacing:.03em}
+
+/* STATS ACUMULADAS na home */
+.stats-acum{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:.75rem}
+.stat-acum-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);padding:.625rem .75rem;text-align:center}
+.stat-acum-val{font-size:22px;font-weight:800;color:var(--text);line-height:1}
+.stat-acum-lbl{font-size:10px;color:var(--text3);margin-top:2px}
+
+/* REVEAL região */
+.regiao-reveal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:300;flex-direction:column;align-items:center;justify-content:center;gap:12px}
+.regiao-reveal.show{display:flex}
+.regiao-reveal-emoji{font-size:56px}
+.regiao-reveal-nome{font-size:32px;font-weight:800;color:#fff;letter-spacing:-1.5px}
+.regiao-reveal-gen{font-size:13px;color:rgba(255,255,255,.6);font-weight:600}
+
 /* TURNO INDICATOR */
 .turno-badge{display:none!important}
 
@@ -248,7 +274,15 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem;text-align:center}
 .gym-log-row img:not(.type-img){width:36px;height:36px;image-rendering:pixelated;display:block}
 .glr-name{font-size:12px;font-weight:700}.glr-detail{font-size:10px;color:var(--text3)}
 .type-chip{font-size:10px;font-weight:700;padding:2px 7px;border-radius:99px;white-space:nowrap}.glr-ico{font-size:16px;font-weight:700}
-.final-card{border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;text-align:center;margin-bottom:1rem;background:var(--bg2)}
+.final-card{border:1px solid var(--border);border-radius:var(--r);padding:1.5rem;text-align:center;margin-bottom:1rem;background:var(--bg2);opacity:0;transition:opacity .6s ease}
+.final-card.show{opacity:1}
+/* CONFETE */
+@keyframes confete-cair{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(120px) rotate(720deg);opacity:0}}
+.confete-piece{position:fixed;width:8px;height:8px;border-radius:2px;pointer-events:none;animation:confete-cair 1.2s ease-in forwards}
+/* BADGE DE ORDEM no card do time */
+.team-order-badge{position:absolute;top:6px;left:8px;font-size:9px;font-weight:800;color:var(--text3);letter-spacing:.04em}
+.team-order-badge.first{color:#EF9F27;font-size:10px}
+.team-order-badge.last{color:var(--text3)}
 .final-score{font-size:58px;font-weight:800;letter-spacing:-3px;margin-bottom:6px}.final-msg{font-size:14px;color:var(--text2);line-height:1.6}
 .btns-final{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 
@@ -374,6 +408,11 @@ footer{margin-top:0}
 .nav-header-title{font-size:28px;font-weight:800;letter-spacing:-1.5px;line-height:1;color:var(--text)}
 /* SORTEIO centralizado */
 .dado-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;padding:2rem 0}
+.reveal-regiao{display:none;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:12px;animation:fadeInUp .4s ease forwards}
+.reveal-regiao.show{display:flex}
+.reveal-nome{font-size:32px;font-weight:800;letter-spacing:-1.5px;color:var(--text)}
+.reveal-gen{font-size:13px;color:var(--text3);font-weight:600;letter-spacing:.06em;text-transform:uppercase}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 </style>
 </head>
 <body>
@@ -424,6 +463,12 @@ footer{margin-top:0}
   </div>
 
   <!-- CTAs -->
+  <div class="stats-acum" id="stats-acum" style="display:none">
+    <div class="stat-acum-card"><div class="stat-acum-val" id="sa-gyms">0</div><div class="stat-acum-lbl">ginásios vencidos</div></div>
+    <div class="stat-acum-card"><div class="stat-acum-val" id="sa-runs">0</div><div class="stat-acum-lbl">partidas jogadas</div></div>
+    <div class="stat-acum-card"><div class="stat-acum-val" id="sa-winrate">—</div><div class="stat-acum-lbl">winrate ginásios</div></div>
+    <div class="stat-acum-card"><div class="stat-acum-val" id="sa-mvp" style="font-size:11px;padding-top:4px">—</div><div class="stat-acum-lbl">pokémon mais usado</div></div>
+  </div>
   <button class="btn btn-dark" onclick="rolarDado()">Jogar</button>
   <button class="btn" onclick="abrirHistorico()">Últimas partidas</button>
 
@@ -448,13 +493,25 @@ footer{margin-top:0}
 </div>
 
 
+<!-- REVEAL REGIÃO -->
+<div class="regiao-reveal" id="regiao-reveal">
+  <div class="regiao-reveal-emoji" id="rr-emoji">🌿</div>
+  <div class="regiao-reveal-nome" id="rr-nome">Kanto</div>
+  <div class="regiao-reveal-gen" id="rr-gen">Geração I · 1996</div>
+</div>
+
 <!-- SORTEIO -->
 <div id="s-sorteio" class="screen">
-  <div class="dado-wrap">
+  <div class="dado-wrap" id="dado-wrap">
     <span class="dado" id="dado-ico"></span>
     <div id="sorteio-progress" style="display:none;margin:.875rem auto 0;width:120px;height:3px;background:var(--bg3);border-radius:3px;overflow:hidden">
       <div id="sorteio-bar" style="height:3px;background:var(--text);border-radius:3px;width:0%;transition:width .12s linear"></div>
     </div>
+  </div>
+  <div class="reveal-regiao" id="reveal-regiao">
+    <div style="font-size:48px" id="reveal-emoji">🌿</div>
+    <div class="reveal-nome" id="reveal-nome">Kanto</div>
+    <div class="reveal-gen" id="reveal-gen">Geração I · 1996</div>
   </div>
 </div>
 
@@ -621,7 +678,13 @@ footer{margin-top:0}
     <h2>Últimas partidas</h2>
     <p class="sub">Últimas 5 partidas salvas no seu navegador.</p>
     <div class="hist-list" id="hist-list"></div>
-    <button class="btn btn-dark" onclick="rolarDado()">Jogar</button>
+    <div class="stats-acum" id="stats-acum" style="display:none">
+    <div class="stat-acum-card"><div class="stat-acum-val" id="sa-gyms">0</div><div class="stat-acum-lbl">ginásios vencidos</div></div>
+    <div class="stat-acum-card"><div class="stat-acum-val" id="sa-runs">0</div><div class="stat-acum-lbl">partidas jogadas</div></div>
+    <div class="stat-acum-card"><div class="stat-acum-val" id="sa-winrate">—</div><div class="stat-acum-lbl">winrate ginásios</div></div>
+    <div class="stat-acum-card"><div class="stat-acum-val" id="sa-mvp" style="font-size:11px;padding-top:4px">—</div><div class="stat-acum-lbl">pokémon mais usado</div></div>
+  </div>
+  <button class="btn btn-dark" onclick="rolarDado()">Jogar</button>
     <div style="margin-top:1.5rem">
       <div class="footer-inner">
         <p class="footer-legal">Este projeto não é afiliado, associado ou endossado pela Nintendo, Game Freak ou The Pokémon Company. Pokémon e todos os materiais relacionados são propriedade intelectual de seus respectivos titulares.</p>
@@ -814,6 +877,26 @@ function carregarUltimaPartida(){
   try{
     const hist=JSON.parse(localStorage.getItem('pokerun_hist')||'[]');
     if(!hist.length) return;
+    // Stats acumuladas
+    const totalGyms=hist.filter(r=>!r.desistiu).reduce((s,r)=>s+(r.vitorias||0),0);
+    const totalRuns=hist.filter(r=>!r.desistiu).length;
+    const winrate=totalRuns>0?Math.round((totalGyms/(totalRuns*8))*100):0;
+    // Pokémon mais usado
+    const freq={};
+    hist.forEach(r=>(r.team||[]).forEach(p=>{freq[p.name]=(freq[p.name]||0)+1;}));
+    const mvp=Object.entries(freq).sort((a,b)=>b[1]-a[1])[0];
+    // Mostrar stat extra
+    const sp=document.getElementById('stat-pills');
+    if(sp && totalRuns>0){
+      const extra=document.getElementById('stat-extra');
+      if(!extra){
+        const div=document.createElement('div');
+        div.id='stat-extra';
+        div.style.cssText='font-size:11px;color:var(--text2);text-align:center;margin-top:.375rem;line-height:1.6';
+        div.innerHTML=`${totalRuns} ${totalRuns===1?'partida':'partidas'} · ${totalGyms} ginásios vencidos · ${winrate}% winrate${mvp?` · ${mvp[0]} mais usado`:''}`;
+        sp.after(div);
+      }
+    }
     const r=hist[0];
     const el=document.getElementById('last-run-home');
     if(!el) return;
@@ -908,7 +991,17 @@ async function rolarDado(){
 
   prog.style.display='none';
   regiaoAtual=REGIOES[Math.floor(Math.random()*REGIOES.length)];
-  await sleep(80);
+
+  // Reveal dramático da região por 1.8s
+  document.getElementById('dado-wrap').style.display='none';
+  const revEl=document.getElementById('reveal-regiao');
+  document.getElementById('reveal-emoji').textContent=regiaoAtual.emoji;
+  document.getElementById('reveal-nome').textContent=regiaoAtual.nome;
+  document.getElementById('reveal-gen').textContent=regiaoAtual.gen;
+  revEl.classList.add('show');
+  await sleep(1800);
+  revEl.classList.remove('show');
+  document.getElementById('dado-wrap').style.display='flex';
   iniciarDraft();
 }
 
@@ -1056,8 +1149,11 @@ function confirmarOrdem(){
   document.getElementById('team-grid').innerHTML=team.map((p,i)=>`
     <div class="team-card">
       ${p.shiny?'<div class="team-shiny">✨</div>':''}
+      ${i===0?'<div class="team-order-badge first">▶ 1º</div>'
+        :i===team.length-1?'<div class="team-order-badge last">'+team.length+'º</div>'
+        :'<div class="team-order-badge">'+( i+1)+'º</div>'}
       ${imgTag(p.id,58,58,p.shiny)}
-      <div class="team-name">${i+1}. ${p.name}</div>
+      <div class="team-name">${p.name}</div>
       <div class="team-ovr" style="color:${ovrColor(p.ovr)}">${p.ovr}</div>
       <div class="team-meta">${p.types.map(t=>`<img class="type-img" src="${TYPE_SPR(t)}" title="${TYPE_LABEL[t]||t}" alt="${TYPE_LABEL[t]||t}" style="width:60px!important;height:12px!important;display:block;image-rendering:pixelated;max-width:none">`).join('')}${p.legendary?'<span style="font-size:9px">⭐</span>':''}</div>
     </div>`).join('');
@@ -1300,34 +1396,80 @@ function toggleAuto(){
 function escolherAcaoAuto(){
   if(!_acaoResolve || !_modoAuto) return;
   const curP=teamState[_playerIdxGlobal];
-  if(!curP) { escolherAcao('atacar'); return; }
+  if(!curP){ escolherAcao('atacar'); return; }
 
-  // Usa Revive se alguém morreu e tem revive
-  const morto=teamState.find(p=>p.fainted);
-  if(morto && bag.revive>0){
-    const ni=teamState.indexOf(morto);
-    confirmarSwap('revive',ni);
-    return;
+  // Tipos reais do pokémon inimigo atual (busca no POOL_GLOBAL)
+  const curGPoke=window._curGymPoke; // definido em simularGinasio
+  const inimigoTypes=curGPoke
+    ? (POOL_GLOBAL.find(p=>p.id===curGPoke.id)?.types || [_gymAtual?.tipoN||'normal'])
+    : [_gymAtual?.tipoN||'normal'];
+
+  // Score ofensivo: quanto meu pokémon faz de dano nos tipos do inimigo
+  const ofScore=p=>getEff(p.types, inimigoTypes);
+  // Score defensivo: quanto o inimigo faz de dano nos meus tipos
+  const defScore=p=>getEff(inimigoTypes, p.types);
+
+  const vivos=teamState.filter((p,i)=>!p.fainted && i!==_playerIdxGlobal);
+  const multAtual=ofScore(curP);
+  const defAtual=defScore(curP);
+
+  // 1. Se imune ao inimigo e tem pokémon melhor, troca
+  if(defAtual===0 && vivos.length>0){
+    // não precisa trocar, imunidade é boa defensivamente
   }
-  // Usa Potion se HP crítico (<= 25%)
+
+  // 2. Revive estratégico: só usa se time está fraco OU tem pokémon muito bom pra usar
+  const mortos=teamState.filter(p=>p.fainted);
+  if(mortos.length>0 && bag.revive>0){
+    // revive o de maior OVR com melhor matchup
+    const melhorMorto=mortos.sort((a,b)=>{
+      const scoreA=ofScore(a)*a.ovr - defScore(a)*50;
+      const scoreB=ofScore(b)*b.ovr - defScore(b)*50;
+      return scoreB-scoreA;
+    })[0];
+    // só usa revive se HP atual está crítico OU todos os vivos têm tipo ruim
+    const hpCrit=curP.hp<=20;
+    const todosRuins=vivos.every(p=>ofScore(p)<1);
+    if(hpCrit || todosRuins || vivos.length===0){
+      confirmarSwap('revive',teamState.indexOf(melhorMorto));
+      return;
+    }
+  }
+
+  // 3. Potion: usa se HP crítico E não tem troca melhor disponível
   if(curP.hp<=25 && bag.potion>0){
+    const melhorVivo=vivos.sort((a,b)=>ofScore(b)-ofScore(a))[0];
+    // só potion se já estamos bem posicionados (melhor matchup atual) ou sem troca boa
+    if(!melhorVivo || ofScore(melhorVivo)<=multAtual){
+      escolherAcao('potion');
+      return;
+    }
+  }
+
+  // 4. Troca estratégica: considera tipo real do inimigo
+  if(vivos.length>0){
+    const melhor=vivos.sort((a,b)=>{
+      // score combinado: dano que faço - dano que levo, ponderado por HP
+      const sA=(ofScore(a)*2 - defScore(a)) * (a.hp/100) * a.ovr;
+      const sB=(ofScore(b)*2 - defScore(b)) * (b.hp/100) * b.ovr;
+      return sB-sA;
+    })[0];
+    const scoreMelhor=(ofScore(melhor)*2 - defScore(melhor))*(melhor.hp/100)*melhor.ovr;
+    const scoreAtual=(multAtual*2 - defAtual)*(curP.hp/100)*curP.ovr;
+    // troca se o benefício for > 30% melhor e HP não está bom o suficiente
+    if(scoreMelhor > scoreAtual*1.3 && (multAtual<1 || curP.hp<40)){
+      confirmarSwap('trocar',teamState.indexOf(melhor));
+      return;
+    }
+  }
+
+  // 5. Potion preventiva: HP <= 40% E não vale a pena trocar
+  if(curP.hp<=40 && bag.potion>0 && multAtual>=1){
     escolherAcao('potion');
     return;
   }
-  // Troca por pokémon com melhor cobertura de tipo se atual é ineficaz
-  if(_gymAtual){
-    const multAtual=getEff(curP.types,_gymAtual.tipoN);
-    if(multAtual<1){
-      const melhor=teamState
-        .filter((p,i)=>!p.fainted && i!==_playerIdxGlobal)
-        .sort((a,b)=>getEff(b.types,_gymAtual.tipoN)-getEff(a.types,_gymAtual.tipoN))[0];
-      if(melhor && getEff(melhor.types,_gymAtual.tipoN)>multAtual){
-        confirmarSwap('trocar',teamState.indexOf(melhor));
-        return;
-      }
-    }
-  }
-  // Padrão: atacar
+
+  // 6. Atacar
   escolherAcao('atacar');
 }
 
@@ -1388,8 +1530,13 @@ async function irSimular(){
 /* ── simularGinasio ── */
 async function simularGinasio(gi,gym){
   const logs=[];
-  // hp/maxHp já definidos em REGIOES por pokémon (baseado no BST real)
-  const gymPokes=gym.pokes.map(p=>({...p,fainted:false}));
+  // hp/maxHp com variação ±10% para cada run ser diferente
+  const gymPokes=gym.pokes.map(p=>{
+    const dificMult=difficulty==='hard'?1.2:1;
+    const var10=0.9+Math.random()*0.2;
+    const hp=Math.round(p.maxHp*var10*dificMult);
+    return {...p,hp,maxHp:hp,fainted:false};
+  });
   let gymIdx=0, ganhou=false;
 
   const addLog=(type,text)=>{
@@ -1407,6 +1554,7 @@ async function simularGinasio(gi,gym){
   _playerIdxGlobal=playerIdx;
   renderGymPokes(gymPokes,gymIdx);
   renderPlayerTeam(teamState,playerIdx);
+  window._curGymPoke=gymPokes[gymIdx];
   setArenaFighters(teamState[playerIdx],gym,gymPokes[gymIdx]);
   atuHp(teamState[playerIdx],gymPokes[gymIdx],gym);
   addLog('turn',`${teamState[playerIdx].name} entra contra ${gym.lider}! O que você faz?`);
@@ -1519,7 +1667,8 @@ async function simularGinasio(gi,gym){
       gymIdx++;
       if(gymIdx>=gymPokes.length){ ganhou=true; break BATALHA; }
       addLog('turn',`${gym.lider} enviou ${gymPokes[gymIdx].nome}!`);
-      setArenaFighters(curP,gym,gymPokes[gymIdx]);
+      window._curGymPoke=gymPokes[gymIdx];
+    setArenaFighters(curP,gym,gymPokes[gymIdx]);
       atuHp(curP,gymPokes[gymIdx],gym); renderGymPokes(gymPokes,gymIdx);
       await sleep(400);
       continue; // novo turno sem o inimigo atacar
@@ -1632,14 +1781,39 @@ function mostrarFimDeRun(v,d){
       </div>
     </div>`;
   fc.style.display='block';
+  requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ fc.classList.add('show'); }); });
   document.getElementById('btns-final').style.display='grid';
   salvarRun(v,d,emoji);
+  // confete só para vitória perfeita
+  if(perf){ setTimeout(dispararConfete, 400); }
+}
+
+function dispararConfete(){
+  const cores=['#EF9F27','#378ADD','#1a5c1a','#D4537E','#7F77DD','#E24B4A'];
+  const total=40;
+  for(let i=0;i<total;i++){
+    const el=document.createElement('div');
+    el.className='confete-piece';
+    el.style.cssText=`
+      left:${10+Math.random()*80}vw;
+      top:-10px;
+      background:${cores[Math.floor(Math.random()*cores.length)]};
+      animation-delay:${Math.random()*0.8}s;
+      animation-duration:${0.9+Math.random()*0.6}s;
+      transform:rotate(${Math.random()*360}deg);
+      width:${6+Math.random()*6}px;
+      height:${6+Math.random()*6}px;
+    `;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(), 2000);
+  }
 }
 
 /* -- Histórico -- */
 function salvarRun(v,d,emoji,desistiu=false){
   try{
     const hist=JSON.parse(localStorage.getItem('pokerun_hist')||'[]');
+    const vitorias=typeof v==='number'?v:0;
     const run={
       data:new Date().toLocaleDateString('pt-BR'),
       regiao:regiaoAtual.nome,
@@ -1647,10 +1821,13 @@ function salvarRun(v,d,emoji,desistiu=false){
       diff:difficulty,
       placar:desistiu?`🏳️ Desistiu`:`${v}–${d}`,
       emoji,
+      vitorias:desistiu?0:vitorias,
+      total:regiaoAtual.gyms.length,
+      desistiu:!!desistiu,
       team:teamState.map(p=>({id:p.id,name:p.name,ovr:p.ovr,shiny:p.shiny,fainted:p.fainted}))
     };
     hist.unshift(run);
-    if(hist.length>5) hist.splice(5);
+    if(hist.length>10) hist.splice(10);
     localStorage.setItem('pokerun_hist',JSON.stringify(hist));
   }catch(e){}
 }
