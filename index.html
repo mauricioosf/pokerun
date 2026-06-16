@@ -396,7 +396,7 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem;text-align:center}
 /* UTILS */
 .type-pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 6px;border-radius:99px;margin-right:2px}
 footer{margin-top:0}
-.footer-inner{max-width:480px;margin:0 auto;padding:0 1rem 1.5rem;text-align:center}
+.footer-inner{max-width:480px;margin:0 auto;padding:1rem 1rem 1rem;text-align:center}
 .footer-legal{font-size:9px;color:var(--text3);line-height:1.55;margin-bottom:.5rem;display:block}
 .footer-discord{display:inline-block;font-size:11px;color:var(--text3);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s,color .15s}
 .footer-discord:hover{color:var(--text2);border-bottom-color:var(--text2)}
@@ -664,6 +664,17 @@ footer{margin-top:0}
     <button class="btn" onclick="rolarDado()">Jogar novamente</button>
     <button class="btn btn-dark" onclick="show('s-home');carregarUltimaPartida()">Início</button>
   </div>
+  <!-- DEBUG -->
+  <div id="debug-panel" style="display:none;margin-top:.75rem;border:1px dashed #E24B4A;border-radius:8px;padding:.75rem;text-align:center">
+    <p style="font-size:10px;color:#E24B4A;font-weight:700;margin-bottom:.5rem">DEBUG</p>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center">
+      <button class="btn" style="font-size:11px;padding:6px 10px;margin:0;width:auto" onclick="debugSimularVitoria(8,0)">🏆 Vitória perfeita</button>
+      <button class="btn" style="font-size:11px;padding:6px 10px;margin:0;width:auto" onclick="debugSimularVitoria(5,3)">⭐ Vitória parcial</button>
+      <button class="btn" style="font-size:11px;padding:6px 10px;margin:0;width:auto" onclick="debugSimularVitoria(2,6)">💀 Derrota</button>
+      <button class="btn" style="font-size:11px;padding:6px 10px;margin:0;width:auto" onclick="debugInjectHist()">📦 Injetar histórico</button>
+      <button class="btn" style="font-size:11px;padding:6px 10px;margin:0;width:auto" onclick="debugClearHist()">🗑 Limpar histórico</button>
+    </div>
+  </div>
 </div>
 </div>
 
@@ -688,9 +699,10 @@ footer{margin-top:0}
     <div style="margin-top:1.5rem">
       <div class="footer-inner">
         <p class="footer-legal">Este projeto não é afiliado, associado ou endossado pela Nintendo, Game Freak ou The Pokémon Company. Pokémon e todos os materiais relacionados são propriedade intelectual de seus respectivos titulares.</p>
-        <div style="display:flex;gap:16px;justify-content:center;margin-top:.5rem">
+        <div style="display:flex;gap:16px;justify-content:center;margin-top:1rem">
           <a class="footer-discord" href="https://discord.gg/T5MrFbbCDv" target="_blank">Fale Conosco</a>
           <a class="footer-discord footer-apoie" href="https://discord.gg/T5MrFbbCDv" target="_blank">Apoie</a>
+          <a class="footer-discord" href="https://discord.gg/T5MrFbbCDv" target="_blank">Documentação</a>
         </div>
       </div>
     </div>
@@ -700,9 +712,10 @@ footer{margin-top:0}
 <footer id="site-footer">
   <div class="footer-inner">
     <p class="footer-legal">Este projeto não é afiliado, associado ou endossado pela Nintendo, Game Freak ou The Pokémon Company. Pokémon e todos os materiais relacionados são propriedade intelectual de seus respectivos titulares.</p>
-      <div style="display:flex;gap:16px;justify-content:center;margin-top:.5rem">
+      <div style="display:flex;gap:16px;justify-content:center;margin-top:1rem">
         <a class="footer-discord" href="https://discord.gg/T5MrFbbCDv" target="_blank">Fale Conosco</a>
         <a class="footer-discord footer-apoie" href="https://discord.gg/T5MrFbbCDv" target="_blank">Apoie</a>
+        <a class="footer-discord" href="https://discord.gg/T5MrFbbCDv" target="_blank">Documentação</a>
       </div>
   </div>
 </footer>
@@ -872,30 +885,103 @@ const POOL_GLOBAL=(()=>{
 const allIds=new Set(POOL_GLOBAL.map(p=>p.id));
 document.getElementById('stat-total').textContent=allIds.size;
 
+/* DEBUG — ativar com sequência de teclas: D E B */
+(()=>{
+  let seq='';
+  document.addEventListener('keydown',e=>{
+    seq=(seq+e.key).slice(-3).toLowerCase();
+    if(seq==='deb'){
+      const p=document.getElementById('debug-panel');
+      if(p) p.style.display=p.style.display==='none'?'block':'none';
+    }
+  });
+})();
+
+function debugSimularVitoria(v,d){
+  // garante que temos um time e região
+  if(!regiaoAtual) regiaoAtual=REGIOES[0];
+  if(!team.length){
+    team=POOL_GLOBAL.slice(0,6).map(p=>({...p}));
+  }
+  teamState=team.map(p=>({...p,hp:v>0?80:10,maxHp:100,fainted:d>=6,winsCount:Math.floor(v/team.length)}));
+  battleLogs=regiaoAtual.gyms.map((g,i)=>({
+    ganhou:i<v,logs:[],gym:g,gi:i,
+    lidId:g.liderId,
+    heroPoke:teamState[0]
+  }));
+  document.getElementById('battle-arena').style.display='none';
+  document.getElementById('sim-bottom-btns').style.display='none';
+  document.getElementById('placar').style.display='none';
+  document.getElementById('gym-log-rows').style.display='none';
+  document.getElementById('gym-log-rows').innerHTML='';
+  document.getElementById('sim-lbl').textContent=`${regiaoAtual.nome} · ${regiaoAtual.gen} · ${difficulty==='easy'?'Fácil':'Difícil'}`;
+  document.getElementById('sim-lbl-lider').textContent='';
+  show('s-sim');
+  setTimeout(()=>mostrarFimDeRun(v,d),100);
+}
+
+function debugInjectHist(){
+  const regioes=['Kanto','Johto','Hoenn','Sinnoh','Unova'];
+  const hist=Array.from({length:5},(_,i)=>({
+    data:new Date().toLocaleDateString('pt-BR'),
+    regiao:regioes[i%regioes.length],
+    gen:`Geração ${['I','II','III','IV','V'][i%5]} · ${[1996,1999,2002,2006,2010][i%5]}`,
+    diff:i%2===0?'easy':'hard',
+    placar:`${6+i%3}–${2-i%2}`,
+    emoji:i%3===0?'🏆':i%3===1?'⭐':'💀',
+    vitorias:6+i%3,
+    total:8,
+    desistiu:false,
+    team:POOL_GLOBAL.slice(i*3,(i*3)+6).map(p=>({id:p.id,name:p.name,ovr:p.ovr,shiny:false,fainted:i%4===3}))
+  }));
+  localStorage.setItem('pokerun_hist',JSON.stringify(hist));
+  carregarUltimaPartida();
+  alert('Histórico injetado! Acesse Últimas partidas.');
+}
+
+function debugClearHist(){
+  localStorage.removeItem('pokerun_hist');
+  const e=document.getElementById('stat-extra');
+  if(e) e.remove();
+  const lr=document.getElementById('last-run-home');
+  if(lr) lr.style.display='none';
+  alert('Histórico limpo!');
+}
+
 
 function carregarUltimaPartida(){
   try{
     const hist=JSON.parse(localStorage.getItem('pokerun_hist')||'[]');
-    if(!hist.length) return;
-    // Stats acumuladas
-    const totalGyms=hist.filter(r=>!r.desistiu).reduce((s,r)=>s+(r.vitorias||0),0);
-    const totalRuns=hist.filter(r=>!r.desistiu).length;
-    const winrate=totalRuns>0?Math.round((totalGyms/(totalRuns*8))*100):0;
-    // Pokémon mais usado
+    // Stats — aceita partidas antigas sem campo desistiu/vitorias
+    const runs=hist.filter(r=>!r.desistiu && r.placar && !r.placar.includes('🏳'));
+    const totalRuns=hist.length; // todas, incluindo desistências
+    const totalGyms=runs.reduce((s,r)=>{
+      // tenta usar campo vitorias; fallback: parse do placar "V–D"
+      if(typeof r.vitorias==='number') return s+r.vitorias;
+      const m=(r.placar||'').match(/^(\d+)/);
+      return s+(m?parseInt(m[1]):0);
+    },0);
+    const winrate=runs.length>0?Math.round((totalGyms/(runs.length*8))*100):0;
     const freq={};
-    hist.forEach(r=>(r.team||[]).forEach(p=>{freq[p.name]=(freq[p.name]||0)+1;}));
-    const mvp=Object.entries(freq).sort((a,b)=>b[1]-a[1])[0];
-    // Mostrar stat extra
-    const sp=document.getElementById('stat-pills');
-    if(sp && totalRuns>0){
-      const extra=document.getElementById('stat-extra');
+    hist.forEach(r=>(r.team||[]).forEach(p=>{if(p.name)freq[p.name]=(freq[p.name]||0)+1;}));
+    const mvpEntry=Object.entries(freq).sort((a,b)=>b[1]-a[1])[0];
+
+    // Stat-extra: inserir ou atualizar
+    if(totalRuns>0){
+      let extra=document.getElementById('stat-extra');
       if(!extra){
-        const div=document.createElement('div');
-        div.id='stat-extra';
-        div.style.cssText='font-size:11px;color:var(--text2);text-align:center;margin-top:.375rem;line-height:1.6';
-        div.innerHTML=`${totalRuns} ${totalRuns===1?'partida':'partidas'} · ${totalGyms} ginásios vencidos · ${winrate}% winrate${mvp?` · ${mvp[0]} mais usado`:''}`;
-        sp.after(div);
+        extra=document.createElement('div');
+        extra.id='stat-extra';
+        extra.style.cssText='font-size:11px;color:var(--text2);text-align:center;margin-top:.5rem;line-height:1.7;padding:0 1rem';
+        const sp=document.getElementById('stat-pills');
+        if(sp) sp.after(extra);
+        else document.getElementById('s-home').appendChild(extra);
       }
+      const partsStr=`${totalRuns} ${totalRuns===1?'partida':'partidas'}`;
+      const gymsStr=`${totalGyms} ginásios vencidos`;
+      const rateStr=runs.length>0?` · ${winrate}% winrate`:'';
+      const mvpStr=mvpEntry?` · ${mvpEntry[0]} mais usado`:'';
+      extra.textContent=`${partsStr} · ${gymsStr}${rateStr}${mvpStr}`;
     }
     const r=hist[0];
     const el=document.getElementById('last-run-home');
