@@ -4,6 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PokeRun</title>
+<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>
+<link rel="preconnect" href="https://pokeres.bastionbot.org" crossorigin>
+<link rel="dns-prefetch" href="https://raw.githubusercontent.com">
+<link rel="dns-prefetch" href="https://raw.githubusercontent.com">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--bg:#fff;--bg2:#f7f7f5;--bg3:#eeecea;--text:#1a1a18;--text2:#6b6b67;--text3:#9b9b96;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.2);--r:14px;--rs:9px}
@@ -460,23 +464,23 @@ footer{text-align:center;padding:2rem 0 1.5rem;font-size:11px;color:var(--text3)
     <div class="action-panel" id="action-panel">
       <div class="action-grid">
         <button class="action-btn primary" id="btn-atacar" onclick="escolherAcao('atacar')" disabled>
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/tm-normal.png" alt="Atacar" style="width:24px;height:24px;image-rendering:pixelated;filter:brightness(0) invert(1)">
+          <img src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items/tm-normal.png" alt="Atacar" style="width:24px;height:24px;image-rendering:pixelated;filter:brightness(0) invert(1)">
           <span class="action-btn-label">Atacar</span>
           <span class="action-btn-sub">Você age primeiro</span>
         </button>
         <button class="action-btn" id="btn-trocar" onclick="abrirSwapPanel('trocar')" disabled>
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="Trocar" style="width:24px;height:24px;image-rendering:pixelated">
+          <img src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items/poke-ball.png" alt="Trocar" style="width:24px;height:24px;image-rendering:pixelated">
           <span class="action-btn-label">Trocar</span>
           <span class="action-btn-sub">Inimigo ataca</span>
         </button>
         <button class="action-btn" id="btn-potion" onclick="escolherAcao('potion')" disabled>
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/potion.png" alt="Potion">
+          <img src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items/potion.png" alt="Potion">
           <span class="action-btn-label">Potion</span>
           <span class="action-btn-sub">+30% HP</span>
           <span class="action-btn-count" id="bag-potion-count">0</span>
         </button>
         <button class="action-btn" id="btn-revive" onclick="abrirSwapPanel('revive')" disabled>
-          <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/revive.png" alt="Revive">
+          <img src="https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/items/revive.png" alt="Revive">
           <span class="action-btn-label">Revive</span>
           <span class="action-btn-sub">30% HP</span>
           <span class="action-btn-count" id="bag-revive-count">0</span>
@@ -532,8 +536,8 @@ footer{text-align:center;padding:2rem 0 1.5rem;font-size:11px;color:var(--text3)
 <footer>PokeRun — inspirado no <a href="https://7a0.com.br" target="_blank" style="color:inherit">7a0.com.br</a></footer>
 
 <script>
-const SPR   = id=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
-const SHINY = id=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/shiny/${id}.png`;
+const SPR   = id=>`https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/${id}.png`;
+const SHINY = id=>`https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/pokemon/shiny/${id}.png`;
 function imgTag(id,w=56,h=56,shiny=false){
   const url=shiny?SHINY(id):SPR(id);
   return`<img src="${url}" width="${w}" height="${h}" style="image-rendering:pixelated" alt="" loading="lazy" onerror="this.src='${SPR(id)}'">`;
@@ -1494,10 +1498,12 @@ function abrirHistorico(){
   }
 }
 
+/* Pré-carrega ícones de tipo em background assim que a página abre */
 const TYPE_ID={normal:1,fighting:2,flying:3,poison:4,ground:5,rock:6,
   bug:7,ghost:8,steel:9,fire:10,water:11,grass:12,electric:13,
   psychic:14,ice:15,dragon:16,dark:17,fairy:18};
-const TYPE_SPR=t=>`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-ix/scarlet-violet/${TYPE_ID[t]||1}.png`;
+const TYPE_SPR=t=>`https://cdn.jsdelivr.net/gh/PokeAPI/sprites@master/sprites/types/generation-ix/scarlet-violet/${TYPE_ID[t]||1}.png`;
+(()=>{Object.keys(TYPE_ID).forEach(t=>{const i=new Image();i.src=TYPE_SPR(t);});})();
 const TYPE_LABEL={normal:'Normal',fighting:'Lutador',flying:'Voador',poison:'Venenoso',
   ground:'Terra',rock:'Pedra',bug:'Inseto',ghost:'Fantasma',steel:'Aço',fire:'Fogo',
   water:'Água',grass:'Planta',electric:'Elétrico',psychic:'Psíquico',ice:'Gelo',
