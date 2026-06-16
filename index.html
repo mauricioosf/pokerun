@@ -11,15 +11,14 @@
 <link rel="dns-prefetch" href="https://raw.githubusercontent.com">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#fff;--bg2:#f7f7f5;--bg3:#eeecea;--text:#1a1a18;--text2:#6b6b67;--text3:#9b9b96;--border:rgba(0,0,0,.09);--border2:rgba(0,0,0,.2);--r:14px;--rs:9px}
-@media(prefers-color-scheme:dark){:root{--bg:#141412;--bg2:#1e1e1c;--bg3:#282826;--text:#e8e8e4;--text2:#9b9b96;--text3:#6b6b67;--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.2)}}
-html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+:root{--bg:#141412;--bg2:#1e1e1c;--bg3:#282826;--text:#e8e8e4;--text2:#9b9b96;--text3:#6b6b67;--border:rgba(255,255,255,.08);--border2:rgba(255,255,255,.2);--r:14px;--rs:9px}
+html,body{min-height:100%;background:var(--bg);color:var(--text);color-scheme:dark;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
 .wrap{max-width:480px;margin:0 auto;padding:0 1rem}
-.screen{display:none;padding:2rem 0 4rem}.screen.active{display:block}
+.screen{display:none;padding:2rem 0 1.5rem}.screen.active{display:block}
 .eyebrow{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.75rem}
 h1{font-size:26px;font-weight:800;line-height:1.2;margin-bottom:.5rem}
-h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
-.sub{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:1.25rem}
+h2{font-size:18px;font-weight:700;margin-bottom:.375rem;text-align:center}
+.sub{font-size:13px;color:var(--text2);line-height:1.7;margin-bottom:1.25rem;text-align:center}
 .back{background:none;border:none;font-size:13px;color:var(--text3);cursor:pointer;padding:0;margin-bottom:1.5rem;display:inline-block}.back:hover{color:var(--text2)}
 .btn{display:block;width:100%;padding:13px;font-size:14px;font-weight:700;border-radius:var(--rs);cursor:pointer;transition:.15s;text-align:center;border:1px solid var(--border2);background:var(--bg);color:var(--text);margin-top:8px}.btn:hover{background:var(--bg2)}
 .btn-dark{background:var(--text);color:var(--bg);border-color:var(--text)}.btn-dark:hover{opacity:.85;background:var(--text)}.btn-dark:disabled,.btn:disabled{opacity:.3;cursor:default}
@@ -36,10 +35,10 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 .step-t{font-size:13px;font-weight:700;margin-bottom:3px}.step-d{font-size:11px;color:var(--text2);line-height:1.45}
 .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:1.25rem}
 .diff-card{border:1px solid var(--border);border-radius:var(--r);padding:1rem;cursor:pointer;background:var(--bg2);transition:.15s}
-.diff-card.sel{border-color:#378ADD;border-width:2px;background:#E6F1FB}
-.diff-card.sel .dc-t,.diff-card.sel .dc-s{color:#0C447C}
+.diff-card.sel{border-color:#378ADD;border-width:2px;background:#0C447C}
+.diff-card.sel .dc-t,.diff-card.sel .dc-s{color:#B5D4F4}
 .dc-t{font-size:14px;font-weight:700;margin-bottom:4px;color:var(--text)}.dc-s{font-size:12px;color:var(--text2);line-height:1.5}
-.stat-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border);justify-content:center}
+.stat-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border);justify-content:center}
 .stat-pill{font-size:11px;color:var(--text2);background:var(--bg2);border:1px solid var(--border);border-radius:99px;padding:3px 9px}
 .stat-pill span{font-weight:700;color:var(--text)}
 .last-run{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
@@ -80,21 +79,21 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 .draft-regiao-nome{font-size:14px;font-weight:800}
 .draft-regiao-gen{font-size:10px;font-weight:600;opacity:.85}
 .draft-regiao-jogo{font-size:10px;opacity:.7;margin-top:1px}
-.draft-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:.75rem;gap:10px}
-.draft-round-lbl{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:2px}
+.draft-top{display:flex;flex-direction:column;align-items:center;margin-bottom:.75rem;gap:4px;text-align:center}
+.draft-round-lbl{font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px}
 .draft-pool-lbl{font-size:13px;color:var(--text2)}
 .reroll-counter{font-size:11px;font-weight:700;padding:4px 10px;border-radius:99px;background:var(--bg2);border:1px solid var(--border);color:var(--text2);white-space:nowrap;margin-top:4px;display:inline-block}
 .reroll-counter.low{border-color:#e04040;color:#e04040}.reroll-counter.zero{border-color:#e04040;color:#e04040;opacity:.5}
 .draft-slots{display:flex;gap:5px;margin-bottom:.5rem}
 .slot{flex:1;height:54px;border:1.5px dashed var(--border2);border-radius:var(--rs);background:var(--bg2);display:flex;align-items:center;justify-content:center;transition:.2s;overflow:hidden;position:relative;flex-direction:column;gap:1px}
-.slot img{width:38px;height:38px;image-rendering:pixelated}.slot.active{border-color:#378ADD;border-style:solid;background:#E6F1FB}.slot.filled{border-style:solid;border-color:var(--border2)}
+.slot img{width:38px;height:38px;image-rendering:pixelated}.slot.active{border-color:#378ADD;border-style:solid;background:#0C447C}.slot.filled{border-style:solid;border-color:var(--border2)}
 .slot-tag{font-size:7px;font-weight:700;color:var(--text3);line-height:1;position:absolute;bottom:2px;right:3px}
 .draft-slot-label{font-size:12px;color:var(--text2);margin-bottom:.875rem}
 
 /* OPÇÕES */
 .poke-options{display:flex;flex-direction:column;gap:7px;margin-bottom:.875rem}
 .poke-opt{display:grid;grid-template-columns:68px 1fr 52px;align-items:center;gap:10px;padding:.625rem 1rem;background:var(--bg2);border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;transition:.15s;position:relative}
-.poke-opt:hover{background:var(--bg3);border-color:var(--border2)}.poke-opt.sel{border-color:#378ADD;background:#E6F1FB}.poke-opt.sel .poke-name{color:#0C447C}
+.poke-opt:hover{background:var(--bg3);border-color:var(--border2)}.poke-opt.sel{border-color:#378ADD;background:#0C447C}.poke-opt.sel .poke-name{color:#B5D4F4}
 .poke-spr{display:flex;align-items:center;justify-content:center;height:56px;position:relative}
 .poke-spr img{width:56px;height:56px;image-rendering:pixelated}
 .shiny-badge{position:absolute;top:0;right:0;font-size:12px;line-height:1}
@@ -108,13 +107,13 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 .poke-ovr-hidden{font-size:20px;text-align:center;color:var(--text3)}
 
 /* ORDEM DO TIME */
-.order-header{font-size:13px;font-weight:700;color:var(--text);margin-bottom:.5rem}
-.order-sub{font-size:12px;color:var(--text2);margin-bottom:.875rem}
+.order-header{font-size:13px;font-weight:700;color:var(--text);margin-bottom:.5rem;text-align:center}
+.order-sub{font-size:12px;color:var(--text2);margin-bottom:.875rem;text-align:center}
 .order-list{display:flex;flex-direction:column;gap:6px;margin-bottom:1rem}
 .order-card{display:grid;grid-template-columns:32px 44px 1fr auto;align-items:center;gap:10px;padding:.625rem .875rem;background:var(--bg2);border:1px solid var(--border);border-radius:var(--rs);cursor:grab;user-select:none;transition:.15s}
 .order-card:active{cursor:grabbing;opacity:.7}
 .order-card.dragging{opacity:.4;border-color:#378ADD}
-.order-card.drag-over{border-color:#378ADD;background:#E6F1FB}
+.order-card.drag-over{border-color:#378ADD;background:#0C447C}
 .order-num{font-size:14px;font-weight:800;color:var(--text3);text-align:center}
 .order-card img:not(.type-img){width:40px;height:40px;image-rendering:pixelated;display:block}
 .order-info{}
@@ -125,10 +124,12 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 .order-drag-handle{font-size:16px;color:var(--text3)}
 
 /* TIME */
-.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem}
-.team-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:.875rem .75rem;text-align:center;position:relative}
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1.25rem;width:100%}
+.team-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--r);padding:.875rem .75rem;text-align:center;position:relative;display:flex;flex-direction:column;align-items:center}
 .team-card img:not(.type-img){width:58px;height:58px;image-rendering:pixelated;display:block;margin:0 auto 4px}
-.team-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px}.team-ovr{font-size:16px;font-weight:800;margin-bottom:4px}.team-meta{font-size:9px;color:var(--text3);display:flex;align-items:center;justify-content:center;gap:3px;flex-wrap:nowrap}
+.team-name{font-size:12px;font-weight:700;color:var(--text);margin-bottom:4px;width:100%}
+.team-ovr{font-size:16px;font-weight:800;margin-bottom:6px}
+.team-meta{display:flex;flex-direction:column;align-items:center;gap:4px;width:100%}
 .team-shiny{position:absolute;top:6px;right:8px;font-size:13px}
 .team-card.fainted{opacity:.4;filter:grayscale(1)}
 
@@ -147,7 +148,7 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 /* BOTÕES INFERIORES DA SIM */
 .sim-bottom-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:.75rem}
 .btn-auto{background:var(--bg2);border:1.5px solid var(--border2);color:var(--text)}
-.btn-auto.on{background:#E6F1FB;border-color:#378ADD;color:#0C447C}
+.btn-auto.on{background:#0C447C;border-color:#378ADD;color:#B5D4F4}
 .btn-desistir{border-color:#8b1a1a;color:#8b1a1a;background:var(--bg)}
 .btn-desistir:hover{background:#fff0f0}
 
@@ -360,10 +361,13 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem}
 
 /* UTILS */
 .type-pill{display:inline-block;font-size:10px;font-weight:700;padding:2px 6px;border-radius:99px;margin-right:2px}
-footer{text-align:center;padding:1.5rem 1rem 2rem;font-size:11px;color:var(--text3);border-top:1px solid var(--border);margin-top:1rem}
-.footer-legal{font-size:10px;color:var(--text3);line-height:1.6;margin-bottom:.625rem}
+footer{margin-top:0}
+.footer-inner{max-width:480px;margin:0 auto;padding:0 1rem 1.5rem;text-align:center}
+.footer-legal{font-size:9px;color:var(--text3);line-height:1.55;margin-bottom:.5rem;display:block}
 .footer-discord{display:inline-block;font-size:11px;color:var(--text3);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s,color .15s}
 .footer-discord:hover{color:var(--text2);border-bottom-color:var(--text2)}
+.footer-apoie{color:#EF9F27!important;border-bottom-color:transparent}
+.footer-apoie:hover{color:#FAC775!important;border-bottom-color:#FAC775!important}
 /* NAV HEADER — logo em todas as páginas */
 .nav-header{display:flex;flex-direction:column;align-items:center;gap:8px;margin-bottom:1.5rem;text-align:center}
 .nav-header-img{width:52px;height:52px;image-rendering:pixelated}
@@ -407,7 +411,7 @@ footer{text-align:center;padding:1.5rem 1rem 2rem;font-size:11px;color:var(--tex
   </div>
 
   <!-- Dificuldade -->
-  <p style="font-size:12px;font-weight:700;margin-bottom:.625rem;color:var(--text2)">Dificuldade</p>
+  <p style="font-size:18px;font-weight:700;margin-bottom:.75rem;color:var(--text);text-align:center">Dificuldade</p>
   <div class="diff-grid">
     <div class="diff-card sel" onclick="selDiff(this,'easy')">
       <div class="dc-t">Fácil</div>
@@ -441,10 +445,6 @@ footer{text-align:center;padding:1.5rem 1rem 2rem;font-size:11px;color:var(--tex
     <span class="stat-pill"><span id="stat-total">—</span> pokémons disponíveis</span>
   </div>
 
-  <footer>
-    <p class="footer-legal">Este projeto não é afiliado, associado ou endossado pela Nintendo, Game Freak ou The Pokémon Company. Pokémon e todos os materiais relacionados são propriedade intelectual de seus respectivos titulares.</p>
-    <a class="footer-discord" href="https://discord.gg/T5MrFbbCDv" target="_blank">Fale Conosco</a>
-  </footer>
 </div>
 
 
@@ -518,17 +518,19 @@ footer{text-align:center;padding:1.5rem 1rem 2rem;font-size:11px;color:var(--tex
 
 <!-- TIME -->
 <div id="s-time" class="screen">
-  <div class="nav-header">
-    <img class="nav-header-img" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="">
-    <span class="nav-header-title">PokeRun</span>
+  <div class="wrap">
+    <div class="nav-header">
+      <img class="nav-header-img" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="">
+      <span class="nav-header-title">PokeRun</span>
+    </div>
+    <button class="back" onclick="show('s-ordem')">← Ajustar ordem</button>
+    <h2>Seu time</h2>
+    <p class="sub" id="time-sub">—</p>
+    <div class="team-grid" id="team-grid"></div>
+    <p class="sub" id="time-ovr" style="margin-top:.75rem;margin-bottom:0;text-align:center"></p>
+    <button class="btn btn-dark" onclick="irSimular()" style="margin-top:1rem">Batalhar!</button>
+    <button class="btn" onclick="iniciarDraft()">Refazer time</button>
   </div>
-  <button class="back" onclick="show('s-ordem')">← Ajustar ordem</button>
-  <h2>Seu time</h2>
-  <p class="sub" id="time-sub">—</p>
-  <div class="team-grid" id="team-grid"></div>
-  <p class="sub" id="time-ovr" style="margin-top:.75rem;margin-bottom:0;text-align:center"></p>
-  <button class="btn btn-dark" onclick="irSimular()" style="margin-top:1rem">Batalhar!</button>
-  <button class="btn" onclick="iniciarDraft()">Refazer time</button>
 </div>
 
 <!-- SIMULAÇÃO -->
@@ -610,16 +612,37 @@ footer{text-align:center;padding:1.5rem 1rem 2rem;font-size:11px;color:var(--tex
 
 <!-- HISTÓRICO -->
 <div id="s-hist" class="screen">
-  <div class="nav-header">
-    <img class="nav-header-img" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="">
-    <span class="nav-header-title">PokeRun</span>
+  <div class="wrap">
+    <div class="nav-header">
+      <img class="nav-header-img" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png" alt="">
+      <span class="nav-header-title">PokeRun</span>
+    </div>
+    <button class="back" onclick="show('s-home')">← Início</button>
+    <h2>Últimas partidas</h2>
+    <p class="sub">Últimas 5 partidas salvas no seu navegador.</p>
+    <div class="hist-list" id="hist-list"></div>
+    <button class="btn btn-dark" onclick="rolarDado()">Jogar</button>
+    <div style="margin-top:1.5rem">
+      <div class="footer-inner">
+        <p class="footer-legal">Este projeto não é afiliado, associado ou endossado pela Nintendo, Game Freak ou The Pokémon Company. Pokémon e todos os materiais relacionados são propriedade intelectual de seus respectivos titulares.</p>
+        <div style="display:flex;gap:16px;justify-content:center;margin-top:.5rem">
+          <a class="footer-discord" href="https://discord.gg/T5MrFbbCDv" target="_blank">Fale Conosco</a>
+          <a class="footer-discord footer-apoie" href="https://discord.gg/T5MrFbbCDv" target="_blank">Apoie</a>
+        </div>
+      </div>
+    </div>
   </div>
-  <button class="back" onclick="show('s-home')">← Início</button>
-  <h2>Últimas partidas</h2>
-  <p class="sub">Últimas 5 partidas salvas no seu navegador.</p>
-  <div class="hist-list" id="hist-list"></div>
-  <button class="btn btn-dark" onclick="rolarDado()">Jogar</button>
 </div>
+
+<footer id="site-footer">
+  <div class="footer-inner">
+    <p class="footer-legal">Este projeto não é afiliado, associado ou endossado pela Nintendo, Game Freak ou The Pokémon Company. Pokémon e todos os materiais relacionados são propriedade intelectual de seus respectivos titulares.</p>
+      <div style="display:flex;gap:16px;justify-content:center;margin-top:.5rem">
+        <a class="footer-discord" href="https://discord.gg/T5MrFbbCDv" target="_blank">Fale Conosco</a>
+        <a class="footer-discord footer-apoie" href="https://discord.gg/T5MrFbbCDv" target="_blank">Apoie</a>
+      </div>
+  </div>
+</footer>
 
 <!-- LOG MODAL -->
 <div class="modal-overlay" id="log-modal" onclick="fecharModal(event)">
@@ -823,6 +846,8 @@ function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo(0,0);
+  const f=document.getElementById('site-footer');
+  if(f) f.style.display = (id==='s-sorteio'||id==='s-hist') ? 'none' : '';
 }
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 function pill(t){return`<span class="type-pill" style="background:${TC[t]||'#D3D1C7'};color:${TT[t]||'#2C2C2A'}">${t}</span>`;}
@@ -1026,7 +1051,7 @@ function moverOrdem(idx,dir){
 function confirmarOrdem(){
   show('s-time');
   const avg=Math.round(team.reduce((a,p)=>a+p.ovr,0)/team.length);
-  document.getElementById('time-sub').textContent=`Ginásios de ${regiaoAtual.nome}`;
+  document.getElementById('time-sub').textContent=`Pronto(a) para enfrentar os ginásios de ${regiaoAtual.nome}?`;
   document.getElementById('time-ovr').textContent=`Overall médio do seu time: ${avg}`;
   document.getElementById('team-grid').innerHTML=team.map((p,i)=>`
     <div class="team-card">
@@ -1034,7 +1059,7 @@ function confirmarOrdem(){
       ${imgTag(p.id,58,58,p.shiny)}
       <div class="team-name">${i+1}. ${p.name}</div>
       <div class="team-ovr" style="color:${ovrColor(p.ovr)}">${p.ovr}</div>
-      <div class="team-meta">${typeIcons(p.types,12)}${p.legendary?' ⭐':''}</div>
+      <div class="team-meta">${p.types.map(t=>`<img class="type-img" src="${TYPE_SPR(t)}" title="${TYPE_LABEL[t]||t}" alt="${TYPE_LABEL[t]||t}" style="width:60px!important;height:12px!important;display:block;image-rendering:pixelated;max-width:none">`).join('')}${p.legendary?'<span style="font-size:9px">⭐</span>':''}</div>
     </div>`).join('');
 }
 
