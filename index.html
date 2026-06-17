@@ -59,8 +59,8 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem;text-align:center}
 .dado img.spinning{animation:pokespin .4s ease-out}
 @keyframes pokespin{0%{transform:scale(.7)rotate(-15deg)}60%{transform:scale(1.15)rotate(8deg)}100%{transform:scale(1)rotate(0)}}
 .regiao-resultado{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
-.regiao-img-wrap{width:100%;height:180px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;overflow:hidden;position:relative}
-.regiao-img-wrap img{width:100%;height:100%;object-fit:cover;display:block}
+.regiao-img-wrap{width:100%;background:var(--bg3);overflow:hidden;position:relative;padding-top:42%}
+.regiao-img-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .regiao-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 60%);display:flex;align-items:flex-end;padding:1rem}
 .regiao-img-info{color:#fff}
 .regiao-img-nome{font-size:20px;font-weight:800;line-height:1.1}
@@ -72,8 +72,8 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem;text-align:center}
 
 /* DRAFT */
 .draft-regiao-banner{border:1px solid var(--border);border-radius:var(--r);overflow:hidden;margin-bottom:1rem}
-.draft-regiao-img{width:100%;height:120px;background:var(--bg3);display:flex;align-items:center;justify-content:center;flex-direction:column;overflow:hidden;position:relative}
-.draft-regiao-img img{width:100%;height:100%;object-fit:cover;display:block}
+.draft-regiao-img{width:100%;background:var(--bg3);overflow:hidden;position:relative;padding-top:42%}
+.draft-regiao-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .draft-regiao-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 55%);display:flex;align-items:flex-end;padding:.75rem}
 .draft-regiao-texto{color:#fff}
 .draft-regiao-nome{font-size:14px;font-weight:800}
@@ -197,6 +197,17 @@ h2{font-size:18px;font-weight:700;margin-bottom:.375rem;text-align:center}
 /* ARENA FIGHTERS — layout melhorado */
 .fighter-side{text-align:center;position:relative;flex:1}
 .fighter-side img:not(.type-img){width:80px;height:80px;image-rendering:pixelated;display:block;margin:0 auto 6px}
+@keyframes slideInLeft{from{opacity:0;transform:translateX(-32px)}to{opacity:1;transform:translateX(0)}}
+@keyframes slideInRight{from{opacity:0;transform:translateX(32px)}to{opacity:1;transform:translateX(0)}}
+.fighter-enter-left{animation:slideInLeft .45s ease forwards}
+.fighter-enter-right{animation:slideInRight .45s ease forwards}
+/* GYM TRANSITION expressiva */
+.gym-transition-score{font-size:42px;font-weight:800;letter-spacing:-2px;color:#fff;margin:.25rem 0}
+.gym-transition-team{display:flex;gap:4px;justify-content:center;margin:.5rem 0}
+.gym-transition-team img{width:32px;height:32px;image-rendering:pixelated}
+.gym-transition-team img.fainted{opacity:.25;filter:grayscale(1)}
+/* TOGGLE dica de tipagem */
+/* badge de efetividade no swap */
 .fighter-name{font-size:13px;font-weight:800;color:var(--text);margin-bottom:3px}
 .fighter-ovr{font-size:18px;font-weight:800;margin-bottom:3px}
 .fighter-types{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
@@ -570,6 +581,8 @@ footer{margin-top:0}
 <div class="gym-transition" id="gym-transition">
   <div class="gym-transition-icon" id="gt-icon">🏅</div>
   <div class="gym-transition-title" id="gt-title">Ginásio vencido!</div>
+  <div class="gym-transition-score" id="gt-score"></div>
+  <div class="gym-transition-team" id="gt-team"></div>
   <div class="gym-transition-sub" id="gt-sub">Próximo: Misty (Água)</div>
 </div>
 
@@ -664,6 +677,7 @@ footer{margin-top:0}
     <button class="btn" onclick="rolarDado()">Jogar novamente</button>
     <button class="btn btn-dark" onclick="show('s-home');carregarUltimaPartida()">Início</button>
   </div>
+  <button class="btn" id="btn-share" style="display:none;margin-top:.5rem;width:100%" onclick="gerarCardCompartilhavel()">Compartilhar resultado</button>
   <!-- DEBUG -->
   <div id="debug-panel" style="display:none;margin-top:.75rem;border:1px dashed #E24B4A;border-radius:8px;padding:.75rem;text-align:center">
     <p style="font-size:10px;color:#E24B4A;font-weight:700;margin-bottom:.5rem">DEBUG</p>
@@ -747,7 +761,7 @@ const TT={fire:'#712B13',water:'#042C53',grass:'#173404',electric:'#412402',rock
 const TYPE_EFF={fire:{grass:2,bug:2,ice:2,steel:2,water:.5,rock:.5,fire:.5,dragon:.5},water:{fire:2,rock:2,ground:2,grass:.5,water:.5,dragon:.5},grass:{water:2,rock:2,ground:2,fire:.5,grass:.5,poison:.5,flying:.5,bug:.5,dragon:.5,steel:.5},electric:{water:2,flying:2,grass:.5,electric:.5,dragon:.5,ground:0},rock:{fire:2,ice:2,flying:2,bug:2,water:.5,grass:.5,fighting:.5,ground:.5,steel:.5},ground:{fire:2,electric:2,rock:2,poison:2,steel:2,grass:.5,bug:.5,flying:0},ice:{grass:2,ground:2,flying:2,dragon:2,water:.5,ice:.5,fire:.5,steel:.5},fighting:{normal:2,rock:2,steel:2,ice:2,dark:2,poison:.5,bug:.5,psychic:.5,flying:.5,fairy:.5,ghost:0},poison:{grass:2,fairy:2,ground:.5,rock:.5,ghost:.5,poison:.5,steel:0},psychic:{fighting:2,poison:2,psychic:.5,steel:.5,dark:0,ghost:0},ghost:{psychic:2,ghost:2,dark:.5,normal:0,fighting:0},dragon:{dragon:2,steel:.5,fairy:0},dark:{psychic:2,ghost:2,fighting:.5,dark:.5,fairy:.5},steel:{ice:2,rock:2,fairy:2,fire:.5,water:.5,electric:.5,steel:.5},fairy:{fighting:2,dragon:2,dark:2,fire:.5,poison:.5,steel:.5},normal:{rock:.5,steel:.5,ghost:0},flying:{grass:2,fighting:2,bug:2,electric:.5,rock:.5,steel:.5},bug:{grass:2,psychic:2,dark:2,fire:.5,fighting:.5,flying:.5,ghost:.5,steel:.5,fairy:.5}};
 
 const REGIOES=[
-  {nome:'Kanto',gen:'Geração I · 1996',jogo:'Red / Blue / Yellow · FireRed / LeafGreen',emoji:'🌿',img:'YOUR_IMAGE_URL_KANTO',
+  {nome:'Kanto',gen:'Geração I · 1996',jogo:'Red / Blue / Yellow · FireRed / LeafGreen',emoji:'🌿',img:'https://i.imgur.com/wRHkSaml.jpeg',
    desc:'A região original. Lar da Cidade Paleta e do Prof. Carvalho, Kanto foi onde tudo começou — 8 cidades, 8 ginásios, uma liga. O clássico que definiu uma geração.',
    gyms:[{lider:'Brock',tipo:'rock',tipoN:'rock',pokes:[{id:74,nome:'Geodude',hp:73,maxHp:73},{id:95,nome:'Onix',hp:103,maxHp:103}],liderId:95},
          {lider:'Misty',tipo:'water',tipoN:'water',pokes:[{id:120,nome:'Staryu',hp:84,maxHp:84},{id:121,nome:'Starmie',hp:132,maxHp:132}],liderId:121},
@@ -757,7 +771,7 @@ const REGIOES=[
          {lider:'Sabrina',tipo:'psychic',tipoN:'psychic',pokes:[{id:64,nome:'Kadabra',hp:104,maxHp:104},{id:122,nome:'Mr. Mime',hp:128,maxHp:128},{id:65,nome:'Alakazam',hp:167,maxHp:167}],liderId:65},
          {lider:'Blaine',tipo:'fire',tipoN:'fire',pokes:[{id:58,nome:'Growlithe',hp:117,maxHp:117},{id:77,nome:'Ponyta',hp:127,maxHp:127},{id:78,nome:'Rapidash',hp:177,maxHp:177}],liderId:78},
          {lider:'Giovanni',tipo:'ground',tipoN:'ground',pokes:[{id:111,nome:'Rhyhorn',hp:122,maxHp:122},{id:31,nome:'Nidoqueen',hp:150,maxHp:150},{id:112,nome:'Rhydon',hp:183,maxHp:183}],liderId:112}]},
-  {nome:'Johto',gen:'Geração II · 1999',jogo:'Gold / Silver / Crystal · HeartGold / SoulSilver',emoji:'🌸',img:'YOUR_IMAGE_URL_JOHTO',
+  {nome:'Johto',gen:'Geração II · 1999',jogo:'Gold / Silver / Crystal · HeartGold / SoulSilver',emoji:'🌸',img:'https://i.imgur.com/wNZsyEfl.jpeg',
    desc:'Região de tradições e mistérios conectada a Kanto. Berço das lendas dos Três Cães Sagrados e dos divinos Ho-oh e Lugia.',
    gyms:[{lider:'Falkner',tipo:'flying',tipoN:'flying',pokes:[{id:16,nome:'Pidgey',hp:68,maxHp:68},{id:17,nome:'Pidgeotto',hp:98,maxHp:98}],liderId:17},
          {lider:'Bugsy',tipo:'bug',tipoN:'bug',pokes:[{id:14,nome:'Kakuna',hp:68,maxHp:68},{id:13,nome:'Metapod',hp:68,maxHp:68},{id:123,nome:'Scyther',hp:129,maxHp:129}],liderId:123},
@@ -767,7 +781,7 @@ const REGIOES=[
          {lider:'Jasmine',tipo:'steel',tipoN:'steel',pokes:[{id:81,nome:'Magnemite',hp:107,maxHp:107},{id:208,nome:'Steelix',hp:169,maxHp:169}],liderId:208},
          {lider:'Pryce',tipo:'ice',tipoN:'ice',pokes:[{id:86,nome:'Seel',hp:113,maxHp:113},{id:87,nome:'Dewgong',hp:137,maxHp:137},{id:221,nome:'Piloswine',hp:166,maxHp:166}],liderId:221},
          {lider:'Clair',tipo:'dragon',tipoN:'dragon',pokes:[{id:148,nome:'Dragonair',hp:135,maxHp:135},{id:230,nome:'Kingdra',hp:195,maxHp:195}],liderId:230}]},
-  {nome:'Hoenn',gen:'Geração III · 2002',jogo:'Ruby / Sapphire / Emerald · ORAS',emoji:'🌊',img:'YOUR_IMAGE_URL_HOENN',
+  {nome:'Hoenn',gen:'Geração III · 2002',jogo:'Ruby / Sapphire / Emerald · ORAS',emoji:'🌊',img:'https://i.imgur.com/vguyCOtl.jpeg',
    desc:'Região tropical banhada por oceanos. Cenário do confronto entre Equipe Magma e Aqua. Introduziu habilidades, combates duplos e o clima como mecânica.',
    gyms:[{lider:'Roxanne',tipo:'rock',tipoN:'rock',pokes:[{id:74,nome:'Geodude',hp:73,maxHp:73},{id:137,nome:'Nosepass',hp:105,maxHp:105}],liderId:137},
          {lider:'Brawly',tipo:'fighting',tipoN:'fighting',pokes:[{id:296,nome:'Makuhita',hp:72,maxHp:72},{id:297,nome:'Hariyama',hp:125,maxHp:125}],liderId:297},
@@ -777,7 +791,7 @@ const REGIOES=[
          {lider:'Winona',tipo:'flying',tipoN:'flying',pokes:[{id:277,nome:'Swellow',hp:127,maxHp:127},{id:333,nome:'Swablu',hp:104,maxHp:104},{id:334,nome:'Altaria',hp:165,maxHp:165}],liderId:334},
          {lider:'Tate & Liza',tipo:'psychic',tipoN:'psychic',pokes:[{id:337,nome:'Lunatone',hp:135,maxHp:135},{id:338,nome:'Solrock',hp:169,maxHp:169}],liderId:338},
          {lider:'Wallace',tipo:'water',tipoN:'water',pokes:[{id:363,nome:'Spheal',hp:113,maxHp:113},{id:319,nome:'Sharpedo',hp:142,maxHp:142},{id:350,nome:'Milotic',hp:195,maxHp:195}],liderId:350}]},
-  {nome:'Sinnoh',gen:'Geração IV · 2006',jogo:'Diamond / Pearl / Platinum · BDSP',emoji:'❄️',img:'YOUR_IMAGE_URL_SINNOH',
+  {nome:'Sinnoh',gen:'Geração IV · 2006',jogo:'Diamond / Pearl / Platinum · BDSP',emoji:'❄️',img:'https://i.imgur.com/B9aw4khl.jpeg',
    desc:'Região montanhosa e fria, rica em mitologia sobre a criação do universo Pokémon. Dialga, Palkia e Giratina dominam o imaginário.',
    gyms:[{lider:'Roark',tipo:'rock',tipoN:'rock',pokes:[{id:74,nome:'Geodude',hp:73,maxHp:73},{id:138,nome:'Omanyte',hp:79,maxHp:79},{id:409,nome:'Rampardos',hp:119,maxHp:119}],liderId:409},
          {lider:'Gardenia',tipo:'grass',tipoN:'grass',pokes:[{id:420,nome:'Cherubi',hp:76,maxHp:76},{id:182,nome:'Bellossom',hp:102,maxHp:102},{id:407,nome:'Roserade',hp:130,maxHp:130}],liderId:407},
@@ -787,7 +801,7 @@ const REGIOES=[
          {lider:'Byron',tipo:'steel',tipoN:'steel',pokes:[{id:208,nome:'Steelix',hp:135,maxHp:135},{id:437,nome:'Bronzong',hp:134,maxHp:134},{id:411,nome:'Bastiodon',hp:166,maxHp:166}],liderId:411},
          {lider:'Candice',tipo:'ice',tipoN:'ice',pokes:[{id:215,nome:'Sneasel',hp:130,maxHp:130},{id:361,nome:'Snorunt',hp:109,maxHp:109},{id:473,nome:'Mamoswine',hp:183,maxHp:183}],liderId:473},
          {lider:'Volkner',tipo:'electric',tipoN:'electric',pokes:[{id:135,nome:'Jolteon',hp:153,maxHp:153},{id:405,nome:'Luxray',hp:153,maxHp:153},{id:466,nome:'Electivire',hp:195,maxHp:195}],liderId:466}]},
-  {nome:'Unova',gen:'Geração V · 2010',jogo:'Black / White · Black 2 / White 2',emoji:'🏙️',img:'YOUR_IMAGE_URL_UNOVA',
+  {nome:'Unova',gen:'Geração V · 2010',jogo:'Black / White · Black 2 / White 2',emoji:'🏙️',img:'https://i.imgur.com/B9aw4khl.jpeg',
    desc:'Região inspirada em Nova York. Primeira com pokémons exclusivamente novos até os créditos. Enredo mais maduro da franquia. Introduziu batalhas rotativas e duplas obrigatórias.',
    gyms:[{lider:'Cilan/Chili/Cress',tipo:'grass/fire/water',tipoN:'grass',pokes:[{id:511,nome:'Pansage',hp:95,maxHp:95},{id:513,nome:'Pansear',hp:95,maxHp:95},{id:515,nome:'Panpour',hp:119,maxHp:119}],liderId:512},
          {lider:'Lenora',tipo:'normal',tipoN:'normal',pokes:[{id:506,nome:'Lillipup',hp:76,maxHp:76},{id:505,nome:'Watchog',hp:117,maxHp:117}],liderId:505},
@@ -797,7 +811,7 @@ const REGIOES=[
          {lider:'Skyla',tipo:'flying',tipoN:'flying',pokes:[{id:528,nome:'Swoobat',hp:132,maxHp:132},{id:561,nome:'Sigilyph',hp:132,maxHp:132},{id:521,nome:'Unfezant',hp:165,maxHp:165}],liderId:561},
          {lider:'Brycen',tipo:'ice',tipoN:'ice',pokes:[{id:615,nome:'Cryogonal',hp:139,maxHp:139},{id:613,nome:'Cubchoo',hp:109,maxHp:109},{id:614,nome:'Beartic',hp:174,maxHp:174}],liderId:614},
          {lider:'Drayden',tipo:'dragon',tipoN:'dragon',pokes:[{id:611,nome:'Fraxure',hp:133,maxHp:133},{id:612,nome:'Haxorus',hp:156,maxHp:156},{id:621,nome:'Druddigon',hp:183,maxHp:183}],liderId:612}]},
-  {nome:'Kalos',gen:'Geração VI · 2013',jogo:'X / Y',emoji:'🗼',img:'YOUR_IMAGE_URL_KALOS',
+  {nome:'Kalos',gen:'Geração VI · 2013',jogo:'X / Y',emoji:'🗼',img:'https://i.imgur.com/4wCHksxl.jpeg',
    desc:'Região inspirada na França. Introduziu Mega Evolução e o tipo Fada. Primeira região com gráficos 3D totais. Xerneas e Yveltal protagonizaram.',
    gyms:[{lider:'Viola',tipo:'bug',tipoN:'bug',pokes:[{id:290,nome:'Nincada',hp:70,maxHp:70},{id:284,nome:'Masquerain',hp:113,maxHp:113}],liderId:284},
          {lider:'Grant',tipo:'rock',tipoN:'rock',pokes:[{id:696,nome:'Tyrunt',hp:87,maxHp:87},{id:698,nome:'Amaura',hp:108,maxHp:108}],liderId:698},
@@ -807,7 +821,7 @@ const REGIOES=[
          {lider:'Valerie',tipo:'fairy',tipoN:'fairy',pokes:[{id:303,nome:'Mawile',hp:115,maxHp:115},{id:707,nome:'Klefki',hp:129,maxHp:129},{id:700,nome:'Sylveon',hp:172,maxHp:172}],liderId:700},
          {lider:'Olympia',tipo:'psychic',tipoN:'psychic',pokes:[{id:251,nome:'Celebi',hp:158,maxHp:158},{id:605,nome:'Elgyem',hp:114,maxHp:114},{id:606,nome:'Beheeyem',hp:174,maxHp:174}],liderId:606},
          {lider:'Wulfric',tipo:'ice',tipoN:'ice',pokes:[{id:713,nome:'Avalugg',hp:151,maxHp:151},{id:460,nome:'Abomasnow',hp:148,maxHp:148},{id:699,nome:'Aurorus',hp:191,maxHp:191}],liderId:699}]},
-  {nome:'Alola',gen:'Geração VII · 2016',jogo:'Sun / Moon · Ultra Sun / Ultra Moon',emoji:'🌺',img:'YOUR_IMAGE_URL_ALOLA',
+  {nome:'Alola',gen:'Geração VII · 2016',jogo:'Sun / Moon · Ultra Sun / Ultra Moon',emoji:'🌺',img:'https://i.imgur.com/NUTsS2Bl.jpeg',
    desc:'Arquipélago tropical inspirado no Havaí. Substituiu ginásios por Provas de Ilha com Capitães e Kahunas. Introduziu formas regionais e Z-Moves.',
    gyms:[{lider:'Ilima (Cap.)',tipo:'normal',tipoN:'normal',pokes:[{id:288,nome:'Vigoroth',hp:89,maxHp:89},{id:726,nome:'Torracat',hp:108,maxHp:108}],liderId:726},
          {lider:'Lana (Cap.)',tipo:'water',tipoN:'water',pokes:[{id:746,nome:'Wishiwashi',hp:100,maxHp:100},{id:746,nome:'Wishiwashi',hp:125,maxHp:125}],liderId:746},
@@ -817,7 +831,7 @@ const REGIOES=[
          {lider:'Acerola (Cap.)',tipo:'ghost',tipoN:'ghost',pokes:[{id:425,nome:'Drifloon',hp:110,maxHp:110},{id:302,nome:'Sableye',hp:115,maxHp:115},{id:708,nome:'Phantump',hp:130,maxHp:130}],liderId:708},
          {lider:'Kahuna Olivia',tipo:'rock',tipoN:'rock',pokes:[{id:299,nome:'Nosepass',hp:121,maxHp:121},{id:744,nome:'Rockruff',hp:105,maxHp:105},{id:774,nome:'Minior',hp:177,maxHp:177}],liderId:744},
          {lider:'Kahuna Nanu',tipo:'dark',tipoN:'dark',pokes:[{id:51,nome:'Dugtrio',hp:136,maxHp:136},{id:510,nome:'Liepard',hp:140,maxHp:140},{id:715,nome:'Noivern',hp:194,maxHp:194}],liderId:715}]},
-  {nome:'Galar',gen:'Geração VIII · 2019',jogo:'Sword / Shield',emoji:'⚔️',img:'YOUR_IMAGE_URL_GALAR',
+  {nome:'Galar',gen:'Geração VIII · 2019',jogo:'Sword / Shield',emoji:'⚔️',img:'https://i.imgur.com/2HNIrURl.jpeg',
    desc:'Região inspirada no Reino Unido. Introduziu Dynamax e Gigantamax. Os ginásios são espetáculos transmitidos ao vivo para toda a região.',
    gyms:[{lider:'Milo',tipo:'grass',tipoN:'grass',pokes:[{id:829,nome:'Gossifleur',hp:68,maxHp:68},{id:830,nome:'Eldegoss',hp:114,maxHp:114}],liderId:830},
          {lider:'Nessa',tipo:'water',tipoN:'water',pokes:[{id:341,nome:'Corphish',hp:80,maxHp:80},{id:342,nome:'Crawdaunt',hp:99,maxHp:99},{id:834,nome:'Drednaw',hp:127,maxHp:127}],liderId:834},
@@ -827,7 +841,7 @@ const REGIOES=[
          {lider:'Gordie',tipo:'rock',tipoN:'rock',pokes:[{id:95,nome:'Onix',hp:116,maxHp:116},{id:839,nome:'Coalossal',hp:135,maxHp:135},{id:881,nome:'Arctozolt',hp:168,maxHp:168}],liderId:881},
          {lider:'Piers',tipo:'dark',tipoN:'dark',pokes:[{id:510,nome:'Liepard',hp:133,maxHp:133},{id:675,nome:'Pangoro',hp:141,maxHp:141},{id:877,nome:'Morpeko',hp:164,maxHp:164}],liderId:877},
          {lider:'Raihan',tipo:'dragon',tipoN:'dragon',pokes:[{id:877,nome:'Morpeko',hp:138,maxHp:138},{id:845,nome:'Cramorant',hp:145,maxHp:145},{id:880,nome:'Dracozolt',hp:187,maxHp:187}],liderId:880}]},
-  {nome:'Paldea',gen:'Geração IX · 2022',jogo:'Scarlet / Violet',emoji:'🌞',img:'YOUR_IMAGE_URL_PALDEA',
+  {nome:'Paldea',gen:'Geração IX · 2022',jogo:'Scarlet / Violet',emoji:'🌞',img:'https://i.imgur.com/XRqwMXCl.jpeg',
    desc:'Região inspirada na Península Ibérica, com mundo aberto pela primeira vez. Ginásios podem ser desafiados em qualquer ordem. Introduziu o fenômeno Terastal.',
    gyms:[{lider:'Katy',tipo:'bug',tipoN:'bug',pokes:[{id:617,nome:'Accelgor',hp:95,maxHp:95},{id:542,nome:'Leavanny',hp:96,maxHp:96},{id:918,nome:'Spidops',hp:106,maxHp:106}],liderId:918},
          {lider:'Brassius',tipo:'grass',tipoN:'grass',pokes:[{id:192,nome:'Sunflora',hp:94,maxHp:94},{id:114,nome:'Tangela',hp:95,maxHp:95},{id:909,nome:'Smoliv',hp:93,maxHp:93}],liderId:909},
@@ -837,7 +851,7 @@ const REGIOES=[
          {lider:'Ryme',tipo:'ghost',tipoN:'ghost',pokes:[{id:778,nome:'Mimikyu',hp:130,maxHp:130},{id:592,nome:'Frillish',hp:108,maxHp:108},{id:593,nome:'Jellicent',hp:163,maxHp:163}],liderId:593},
          {lider:'Tulip',tipo:'psychic',tipoN:'psychic',pokes:[{id:281,nome:'Kirlia',hp:105,maxHp:105},{id:282,nome:'Gardevoir',hp:144,maxHp:144},{id:890,nome:'Eternatus',hp:216,maxHp:216}],liderId:282},
          {lider:'Grusha',tipo:'ice',tipoN:'ice',pokes:[{id:225,nome:'Delibird',hp:120,maxHp:120},{id:872,nome:'Snom',hp:94,maxHp:94},{id:973,nome:'Flamigo',hp:186,maxHp:186}],liderId:973}]},
-  {nome:'Kitakami',gen:'Geração IX DLC · 2023',jogo:'Scarlet / Violet — The Teal Mask',emoji:'🏯',img:'YOUR_IMAGE_URL_KITAKAMI',
+  {nome:'Kitakami',gen:'Geração IX DLC · 2023',jogo:'Scarlet / Violet — The Teal Mask',emoji:'🏯',img:'https://i.imgur.com/MjMOukll.jpeg',
    desc:'Região folclórica japonesa introduzida como DLC. Rica em tradições e lendas locais com os Pokémons Ogre liderando a mitologia do lugar.',
    gyms:[{lider:'Kieran',tipo:'grass',tipoN:'grass',pokes:[{id:475,nome:'Gallade',hp:98,maxHp:98},{id:182,nome:'Bellossom',hp:94,maxHp:94},{id:407,nome:'Roserade',hp:120,maxHp:120}],liderId:475},
          {lider:'Carmine',tipo:'bug',tipoN:'bug',pokes:[{id:127,nome:'Pinsir',hp:103,maxHp:103},{id:632,nome:'Durant',hp:101,maxHp:101},{id:214,nome:'Heracross',hp:129,maxHp:129}],liderId:214},
@@ -1296,6 +1310,7 @@ function abrirSwapPanel(modo){
         <div class="swap-btn-info">
           <div class="swap-btn-name">${p.name}${p.shiny?' ✨':''}</div>
           <div class="swap-btn-hp">HP ${Math.round(p.hp)}% · OVR ${p.ovr}</div>
+          <div style="display:flex;gap:3px;margin-top:3px">${typeIcons(p.types,11)}</div>
         </div></button>`;
     }).join('');
   } else {
@@ -1308,7 +1323,8 @@ function abrirSwapPanel(modo){
         <img src="${p.shiny?SHINY(p.id):SPR(p.id)}" alt="">
         <div class="swap-btn-info">
           <div class="swap-btn-name">${p.name}</div>
-          <div class="swap-btn-hp">Volta com 30% HP</div>
+          <div class="swap-btn-hp">Volta com 30% HP · OVR ${p.ovr}</div>
+          <div style="display:flex;gap:3px;margin-top:3px">${typeIcons(p.types,11)}</div>
         </div></button>`;
     }).join('');
   }
@@ -1447,21 +1463,146 @@ function sairDraftConfirmado(){
 }
 
 /* ── Transição entre ginásios ── */
-async function mostrarTransicao(ganhou, gym, proximoGym){
+async function mostrarTransicao(ganhou, gym, proximoGym, v, d){
   const el=document.getElementById('gym-transition');
   document.getElementById('gt-icon').textContent = ganhou ? '🏅' : '💀';
   document.getElementById('gt-title').textContent = ganhou
     ? `${gym.lider} vencido!`
     : `Derrota contra ${gym.lider}`;
+  // placar parcial
+  const scoreEl=document.getElementById('gt-score');
+  if(scoreEl && typeof v==='number') scoreEl.textContent=`${v}–${d}`;
+  // sprites do time com HP
+  const teamEl=document.getElementById('gt-team');
+  if(teamEl){
+    teamEl.innerHTML=teamState.map(p=>`
+      <img src="${SPR(p.id)}" class="${p.fainted?'fainted':''}"
+        title="${p.name} · ${p.fainted?'Desmaiado':'HP '+Math.round(p.hp)+'%'}"
+        style="width:32px;height:32px;image-rendering:pixelated;${p.fainted?'opacity:.25;filter:grayscale(1)':''}">
+    `).join('');
+  }
   document.getElementById('gt-sub').textContent = proximoGym
     ? `Próximo: ${proximoGym.lider} (${proximoGym.tipo})`
     : '🏁 Última batalha!';
   el.classList.add('show');
-  await sleep(1500);
+  await sleep(2000);
   el.classList.remove('show');
 }
 
+
 /* ── Desistir ── */
+/* ══ CARD COMPARTILHÁVEL ══ */
+// Guardar dados da última run para o card
+let _cardData={v:0,d:0,regiao:null,diff:'easy',time:[]};
+
+async function gerarCardCompartilhavel(){
+  const {v,d,regiao,diff,time}=_cardData;
+  const W=1080, H=1920;
+  const canvas=document.createElement('canvas');
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  const loadImg=src=>new Promise(res=>{const i=new Image();i.onload=()=>res(i);i.onerror=()=>res(null);i.src=src;});
+  const F=(size,bold=true)=>`${bold?'bold ':' '}${size}px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif`;
+
+  // Fundo + gradiente
+  ctx.fillStyle='#141412'; ctx.fillRect(0,0,W,H);
+  const grad=ctx.createLinearGradient(0,0,0,500);
+  grad.addColorStop(0,'rgba(55,138,221,0.18)'); grad.addColorStop(1,'rgba(0,0,0,0)');
+  ctx.fillStyle=grad; ctx.fillRect(0,0,W,500);
+
+  // Logo
+  ctx.textAlign='center';
+  ctx.font=F(80); ctx.fillStyle='#e8e8e4';
+  ctx.fillText('PokeRun',W/2,140);
+
+  // Região
+  const rNome=regiao?regiao.nome:'—';
+  const rEmoji=regiao?regiao.emoji:'🌿';
+  ctx.font=F(46,false); ctx.fillStyle='#9b9b96';
+  ctx.fillText(`${rEmoji}  ${rNome}`,W/2,210);
+
+  // Linha
+  ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(120,250); ctx.lineTo(W-120,250); ctx.stroke();
+
+  // Placar
+  const placarStr=`${v}–${d}`;
+  const corPlacar=v>=8?'#1a5c1a':v>=6?'#EF9F27':v>=4?'#854F0B':'#8b1a1a';
+  ctx.font=F(260); ctx.fillStyle=corPlacar;
+  ctx.fillText(placarStr,W/2,570);
+
+  // Dificuldade
+  ctx.font=F(38,false); ctx.fillStyle='#6b6b67';
+  ctx.fillText(diff==='easy'?'Fácil':'Difícil',W/2,640);
+
+  // Time — 6 pokémons em 2 linhas de 3
+  const sprSize=130, gapX=20, gapY=30;
+  const cols=3, rows=Math.ceil(time.length/cols);
+  const gridW=cols*sprSize+(cols-1)*gapX;
+  const startX=(W-gridW)/2;
+  let sprY=710;
+
+  for(let i=0;i<time.length;i++){
+    const p=time[i];
+    const col=i%cols, row=Math.floor(i/cols);
+    const x=startX+col*(sprSize+gapX);
+    const y=sprY+row*(sprSize+gapY+70);
+    const img=await loadImg(SPR(p.id));
+    if(p.fainted){ ctx.save(); ctx.globalAlpha=0.28; ctx.filter='grayscale(1)'; }
+    if(img) ctx.drawImage(img,x,y,sprSize,sprSize);
+    if(p.fainted) ctx.restore();
+    // nome
+    ctx.font=F(26); ctx.fillStyle=p.fainted?'#555':'#e8e8e4'; ctx.textAlign='center';
+    ctx.fillText(p.name,x+sprSize/2,y+sprSize+34);
+    // ovr
+    ctx.font=F(30);
+    ctx.fillStyle=p.fainted?'#555':ovrColor(p.ovr);
+    ctx.fillText(p.fainted?'✕':String(p.ovr),x+sprSize/2,y+sprSize+70);
+  }
+
+  // Linha antes do MVP
+  const mvpY=sprY+rows*(sprSize+gapY+70)+20;
+  ctx.strokeStyle='rgba(255,255,255,0.08)';
+  ctx.beginPath(); ctx.moveTo(120,mvpY); ctx.lineTo(W-120,mvpY); ctx.stroke();
+
+  // MVP
+  const mvp=[...time].filter(p=>!p.fainted).sort((a,b)=>(b.winsCount||0)-(a.winsCount||0))[0]||time[0];
+  const mvpImgY=mvpY+30;
+  ctx.font=F(32); ctx.fillStyle='#EF9F27'; ctx.textAlign='center';
+  ctx.fillText('MVP',W/2,mvpImgY+28);
+  const mvpImg=await loadImg(SPR(mvp.id));
+  if(mvpImg) ctx.drawImage(mvpImg,W/2-90,mvpImgY+44,180,180);
+  ctx.font=F(38); ctx.fillStyle='#e8e8e4';
+  ctx.fillText(mvp.name,W/2,mvpImgY+258);
+
+  // Rodapé
+  const footY=mvpImgY+320;
+  ctx.strokeStyle='rgba(255,255,255,0.08)';
+  ctx.beginPath(); ctx.moveTo(120,footY); ctx.lineTo(W-120,footY); ctx.stroke();
+  ctx.font=F(32,false); ctx.fillStyle='#6b6b67'; ctx.textAlign='center';
+  ctx.fillText('pokerun · fangame não oficial',W/2,footY+50);
+
+  // Download
+  const a=document.createElement('a');
+  a.download=`pokerun-${rNome.toLowerCase().replace(/\s/g,'-')}-${v}-${d}.png`;
+  a.href=canvas.toDataURL('image/png');
+  a.click();
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.lineTo(x+w-r,y);
+  ctx.quadraticCurveTo(x+w,y,x+w,y+r);
+  ctx.lineTo(x+w,y+h-r);
+  ctx.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+  ctx.lineTo(x+r,y+h);
+  ctx.quadraticCurveTo(x,y+h,x,y+h-r);
+  ctx.lineTo(x,y+r);
+  ctx.quadraticCurveTo(x,y,x+r,y);
+  ctx.closePath();
+}
+
 function desistir(){
   if(!confirm('Desistir da run? Ela será salva no histórico como desistência.')) return;
   if(_acaoResolve){ const r=_acaoResolve; _acaoResolve=null; r('desistir'); }
@@ -1581,6 +1722,7 @@ async function irSimular(){
   document.getElementById('gym-log-rows').style.display='block';
   document.getElementById('battle-arena').style.display='block';
   document.getElementById('sim-bottom-btns').style.display='grid';
+
   document.getElementById('turno-badge').style.display='inline-flex';
 
   let v=0,d=0;
@@ -1598,7 +1740,7 @@ async function irSimular(){
     // transição entre ginásios
     const proximoGym = regiaoAtual.gyms[gi+1] || null;
     if(gi < regiaoAtual.gyms.length-1){
-      await mostrarTransicao(log.ganhou, regiaoAtual.gyms[gi], proximoGym);
+      await mostrarTransicao(log.ganhou, regiaoAtual.gyms[gi], proximoGym, v, d);
       clearLog();
     }
   }
@@ -1608,6 +1750,7 @@ async function irSimular(){
   document.getElementById('battle-arena').style.display='none';
   document.getElementById('sim-bottom-btns').style.display='none';
   document.getElementById('turno-badge').style.display='none';
+
   document.getElementById('placar').style.display='none';
   document.getElementById('gym-log-rows').style.display='none';
   mostrarFimDeRun(v,d);
@@ -1656,7 +1799,7 @@ async function simularGinasio(gi,gym){
       if(prox===-1){ addLog('lose','Time todo desmaiado!'); await sleep(700); break; }
       playerIdx=prox; _playerIdxGlobal=playerIdx; curP=teamState[playerIdx];
       addLog('swap',`${curP.name} entra em campo!`);
-      setArenaFighters(curP,gym,curG);
+      setArenaFighters(curP,gym,curG,'player');
       renderPlayerTeam(teamState,playerIdx);
       atuHp(curP,curG,gym);
       await sleep(480);
@@ -1754,7 +1897,7 @@ async function simularGinasio(gi,gym){
       if(gymIdx>=gymPokes.length){ ganhou=true; break BATALHA; }
       addLog('turn',`${gym.lider} enviou ${gymPokes[gymIdx].nome}!`);
       window._curGymPoke=gymPokes[gymIdx];
-    setArenaFighters(curP,gym,gymPokes[gymIdx]);
+    setArenaFighters(curP,gym,gymPokes[gymIdx],'enemy');
       atuHp(curP,gymPokes[gymIdx],gym); renderGymPokes(gymPokes,gymIdx);
       await sleep(400);
       continue; // novo turno sem o inimigo atacar
@@ -1821,6 +1964,8 @@ function calcDmgPScaled(curP,curG,gym,gi){
 
 /* -- Fim de run -- */
 function mostrarFimDeRun(v,d){
+  // guardar para o card
+  _cardData={v,d,regiao:regiaoAtual,diff:difficulty,time:teamState.map(p=>({...p}))};
   // MVP: pokémon com mais ginásios vencidos
   const mvp=[...teamState].sort((a,b)=>(b.winsCount||0)-(a.winsCount||0))[0];
   const perf=v===regiaoAtual.gyms.length, bom=v>=6;
@@ -1869,6 +2014,8 @@ function mostrarFimDeRun(v,d){
   fc.style.display='block';
   requestAnimationFrame(()=>{ requestAnimationFrame(()=>{ fc.classList.add('show'); }); });
   document.getElementById('btns-final').style.display='grid';
+  const shareBtn=document.getElementById('btn-share');
+  if(shareBtn) shareBtn.style.display='block';
   salvarRun(v,d,emoji);
   // confete só para vitória perfeita
   if(perf){ setTimeout(dispararConfete, 400); }
@@ -1944,6 +2091,9 @@ function abrirHistorico(){
 }
 
 /* Pré-carrega ícones de tipo em background assim que a página abre */
+// Pré-carregar imagens de região em background
+(()=>{ REGIOES.forEach(r=>{ if(r.img&&!r.img.startsWith('YOUR')){ const i=new Image(); i.src=r.img; } }); })();
+
 const TYPE_ID={normal:1,fighting:2,flying:3,poison:4,ground:5,rock:6,
   bug:7,ghost:8,steel:9,fire:10,water:11,grass:12,electric:13,
   psychic:14,ice:15,dragon:16,dark:17,fairy:18};
@@ -1979,8 +2129,7 @@ function typeIcons(types, h=12){
   return types.map(t=>`<img class="type-img" src="${TYPE_SPR(t)}" title="${TYPE_LABEL[t]||t}" alt="${TYPE_LABEL[t]||t}" style="width:${w}px!important;height:${h}px!important;display:inline-block;vertical-align:middle;image-rendering:pixelated">`).join(' ');
 }
 
-function setArenaFighters(player,gym,gymPoke){
-  // Função helper: card de fighter simétrico
+function setArenaFighters(player,gym,gymPoke,animSide='both'){
   const fighterCard=(id,name,ovr,types,shiny,isPlayer)=>{
     if(!id) return `<div style="opacity:.3;font-size:28px">💀</div>`;
     return `${imgTag(id,80,80,shiny)}
@@ -1988,18 +2137,30 @@ function setArenaFighters(player,gym,gymPoke){
       <div class="fighter-ovr" style="color:${ovrColor(ovr)}">${ovr}</div>
       <div class="fighter-types">${typeIcons(types,13)}</div>`;
   };
-  document.getElementById('af-player').innerHTML = player
-    ? fighterCard(player.id, player.name, player.ovr, player.types, player.shiny, true)
-    : fighterCard(null);
-  document.getElementById('af-enemy').innerHTML = gymPoke
+  const afP=document.getElementById('af-player');
+  const afE=document.getElementById('af-enemy');
+  afP.innerHTML = player ? fighterCard(player.id, player.name, player.ovr, player.types, player.shiny, true) : fighterCard(null);
+  afE.innerHTML = gymPoke
     ? (()=>{
-        // Busca OVR real no POOL_GLOBAL pelo id; fallback por maxHp
         const found=POOL_GLOBAL.find(p=>p.id===gymPoke.id);
         const ovrEst=found ? found.ovr : Math.max(10,Math.min(99,
           Math.round(1+(((gymPoke.maxHp/40)*195-195)/(720-195))*98)));
-        return fighterCard(gymPoke.id, gymPoke.nome, ovrEst, [gym.tipoN], false, false);
+        // Usar tipos reais do pokémon (não só o tipo do ginásio)
+        const tipos=found ? found.types : [gym.tipoN];
+        return fighterCard(gymPoke.id, gymPoke.nome, ovrEst, tipos, false, false);
       })()
     : `<div style="opacity:.3;font-size:28px">—</div>`;
+  // Animação de entrada — só o lado indicado
+  requestAnimationFrame(()=>{
+    if(animSide==='both'||animSide==='player'){
+      const pi=afP.querySelector('img:not(.type-img)');
+      if(pi){ pi.classList.remove('fighter-enter-left'); void pi.offsetWidth; pi.classList.add('fighter-enter-left'); }
+    }
+    if(animSide==='both'||animSide==='enemy'){
+      const ei=afE.querySelector('img:not(.type-img)');
+      if(ei){ ei.classList.remove('fighter-enter-right'); void ei.offsetWidth; ei.classList.add('fighter-enter-right'); }
+    }
+  });
 }
 
 function renderGymPokes(gymPokes,activeIdx){
